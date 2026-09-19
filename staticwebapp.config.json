@@ -1,0 +1,20 @@
+{
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": [
+      "/assets/*",
+      "/fonts/*",
+      "/tesseract/*",
+      "*.wasm",
+      "*.mjs",
+      "*.js",
+      "*.css",
+      "*.png",
+      "*.ico",
+      "/robots.txt"
+    ]
+  },
+  "mimeTypes": {
+    ".wasm": "application/wasm"
+  }
+}

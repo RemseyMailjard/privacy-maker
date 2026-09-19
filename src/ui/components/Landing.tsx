@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Scale, Briefcase, Stethoscope, Users, Lock, ShieldCheck, Eye, ChevronDown, ArrowDown, Building2, WifiOff, FileCheck, Globe } from 'lucide-react';
+import { Scale, Briefcase, Stethoscope, Users, Lock, ShieldCheck, Eye, ChevronDown, ArrowDown, Building2, WifiOff, FileCheck, Globe, HeartHandshake, Landmark, GraduationCap, Newspaper, Microscope } from 'lucide-react';
 import { useTranslation } from '../../i18n/LanguageContext.tsx';
 import { RotatingWord } from './RotatingWord.tsx';
 
@@ -124,14 +124,19 @@ export function Audience() {
     { icon: Briefcase, title: a.consultantsTitle, body: a.consultantsBody },
     { icon: Stethoscope, title: a.healthcareTitle, body: a.healthcareBody },
     { icon: Users, title: a.hrTitle, body: a.hrBody },
+    { icon: HeartHandshake, title: a.foundationsTitle, body: a.foundationsBody },
+    { icon: Landmark, title: a.governmentTitle, body: a.governmentBody },
+    { icon: GraduationCap, title: a.educationTitle, body: a.educationBody },
+    { icon: Newspaper, title: a.journalismTitle, body: a.journalismBody },
+    { icon: Microscope, title: a.researchTitle, body: a.researchBody },
   ];
   return (
     <section className="bg-[#F3F2F1] px-6 py-20 border-y border-[#E1DFDD]">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         <h2 className="text-center font-serif text-3xl md:text-4xl text-[#242424] mb-12 font-medium tracking-tight">
           {a.heading}
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
           {cards.map(({ icon: Icon, title, body }) => (
             <div
               key={title}

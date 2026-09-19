@@ -220,6 +220,16 @@ export interface Translations {
       healthcareBody: string;
       hrTitle: string;
       hrBody: string;
+      foundationsTitle: string;
+      foundationsBody: string;
+      governmentTitle: string;
+      governmentBody: string;
+      educationTitle: string;
+      educationBody: string;
+      journalismTitle: string;
+      journalismBody: string;
+      researchTitle: string;
+      researchBody: string;
     };
     howItWorks: {
       eyebrow: string;

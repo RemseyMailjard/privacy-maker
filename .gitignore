@@ -46,6 +46,9 @@ coverage/
 # Vite
 *.local
 
+# Vite PWA (dev-mode service worker output)
+dev-dist/
+
 # TypeScript
 *.tsbuildinfo
 public/tesseract/

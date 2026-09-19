@@ -11,10 +11,14 @@
       "*.css",
       "*.png",
       "*.ico",
-      "/robots.txt"
+      "*.webmanifest",
+      "/robots.txt",
+      "/sw.js",
+      "/manifest.webmanifest"
     ]
   },
   "mimeTypes": {
-    ".wasm": "application/wasm"
+    ".wasm": "application/wasm",
+    ".webmanifest": "application/manifest+json"
   }
 }

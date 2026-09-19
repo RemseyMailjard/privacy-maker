@@ -2,6 +2,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
+import { VitePWA } from 'vite-plugin-pwa'
 import path from 'path'
 import { readFileSync } from 'fs'
 
@@ -14,7 +15,65 @@ const coreVersion = JSON.parse(
 ).version as string
 
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  plugins: [
+    react(),
+    tailwindcss(),
+    VitePWA({
+      registerType: 'autoUpdate',
+      includeAssets: ['favicon-16x16.png', 'favicon-32x32.png', 'apple-touch-icon.png', 'robots.txt'],
+      manifest: {
+        name: 'Privacy Maker',
+        short_name: 'Privacy Maker',
+        description: 'Make documents safe before using AI. Open-source, browser-only PII redactor.',
+        theme_color: '#111111',
+        background_color: '#F9F9F7',
+        display: 'standalone',
+        start_url: '/',
+        icons: [
+          { src: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+          { src: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+          { src: '/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+        ],
+      },
+      workbox: {
+        // The app shell (JS/CSS/HTML) is precached on install. The ONNX
+        // runtime WASM and Tesseract OCR assets are large (11-22 MB) and
+        // only ever needed after the user opts into the model download or
+        // uploads an image, so they're cached at runtime instead (below) -
+        // precaching them would make first install far heavier than the
+        // model consent flow already asks the user to accept.
+        globPatterns: ['**/*.{js,css,html}'],
+        globIgnores: ['ort-wasm-simd-threaded*', 'tesseract/**'],
+        maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
+        runtimeCaching: [
+          {
+            urlPattern: /\.(?:wasm|mjs)$/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'privacy-maker-ort-runtime',
+              expiration: { maxEntries: 10 },
+            },
+          },
+          {
+            urlPattern: /\/tesseract\//,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'privacy-maker-ocr-runtime',
+              expiration: { maxEntries: 30 },
+            },
+          },
+          {
+            urlPattern: /\/fonts\//,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'privacy-maker-fonts',
+              expiration: { maxEntries: 10 },
+            },
+          },
+        ],
+      },
+    }),
+  ],
   define: {
     __APP_VERSION__: JSON.stringify(appVersion),
     __CORE_VERSION__: JSON.stringify(coreVersion),

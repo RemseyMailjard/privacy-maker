@@ -20,7 +20,7 @@ for (const f of ORT_FILES) {
 }
 
 // Tesseract OCR worker + core (single-file builds with embedded WASM).
-// Only the LSTM variants are copied - DocCloak always runs OEM 1 (LSTM only).
+// Only the LSTM variants are copied - Privacy Maker always runs OEM 1 (LSTM only).
 // The worker picks relaxedsimd/simd/baseline based on device capabilities.
 mkdirSync('public/tesseract/core', { recursive: true });
 copyFileSync('node_modules/tesseract.js/dist/worker.min.js', 'public/tesseract/worker.min.js');

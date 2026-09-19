@@ -147,7 +147,7 @@ function getClient(): EngineClient {
       // Fail every pending promise so the UI can surface an error and offer
       // a retry instead of hanging forever, and drop the dead worker so the
       // next call spawns a fresh one.
-      console.error('[DocCloak] Worker error:', e);
+      console.error('[Privacy Maker] Worker error:', e);
       const err = new Error(e.message || 'Detection worker crashed');
       loading = false;
       loaded = false;

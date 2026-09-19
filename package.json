@@ -1,9 +1,9 @@
 {
-  "name": "doccloak",
+  "name": "privacy-maker",
   "private": true,
-  "version": "0.10.2",
+  "version": "0.1.0",
   "type": "module",
-  "description": "Offline, open-source document anonymizer. Strip PII before sharing with AI services.",
+  "description": "Local privacy protection for documents before using AI.",
   "license": "AGPL-3.0",
   "author": "Witold Lojek",
   "scripts": {

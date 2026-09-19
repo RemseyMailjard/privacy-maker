@@ -3,30 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DocCloak - Anonymize documents before AI. Open source.</title>
-    <meta name="description" content="Open-source, browser-only document anonymizer. DocCloak swaps names, emails, phones and other PII for safe stand-ins before you share a document with ChatGPT, Claude or Gemini, and restores the real values in the reply. Full answers for you, fake data for the AI - and your text never leaves your browser." />
+    <title>Privacy Maker - Make documents safe before using AI. Open source.</title>
+    <meta name="description" content="Open-source, browser-only document anonymizer. Privacy Maker swaps names, emails, phones and other PII for safe stand-ins before you share a document with ChatGPT, Claude or Gemini, and restores the real values in the reply. Full answers for you, fake data for the AI - and your text never leaves your browser." />
     <meta name="keywords" content="PII redaction, document anonymizer, GDPR, HIPAA, ChatGPT privacy, Claude privacy, local-first, browser-only, open source, AGPL" />
-    <meta name="author" content="DocCloak" />
+    <meta name="author" content="Privacy Maker" />
     <meta name="theme-color" content="#111111" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="DocCloak - Anonymize documents before AI. Open source." />
+    <meta property="og:title" content="Privacy Maker - Make documents safe before using AI. Open source." />
     <meta property="og:description" content="Full answers for you, fake data for the AI. Swap PII for stand-ins before sharing with ChatGPT, Claude or Gemini, restore the real values in the reply. 100% in your browser, open source." />
-    <meta property="og:url" content="https://doccloak.com/" />
-    <meta property="og:site_name" content="DocCloak" />
-    <meta property="og:image" content="https://doccloak.com/og-image.jpg" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="DocCloak - open-source browser-only PII redactor" />
+    <meta property="og:site_name" content="Privacy Maker" />
+    <meta property="og:image" content="/apple-touch-icon.png" />
+    <meta property="og:image:width" content="180" />
+    <meta property="og:image:height" content="180" />
+    <meta property="og:image:alt" content="Privacy Maker - open-source browser-only PII redactor" />
 
     <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="DocCloak - Anonymize documents before AI. Open source." />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Privacy Maker - Make documents safe before using AI. Open source." />
     <meta name="twitter:description" content="Full answers for you, fake data for the AI. Swap PII for stand-ins before sharing with AI, restore the real values in the reply. 100% in your browser, open source." />
-    <meta name="twitter:image" content="https://doccloak.com/og-image.jpg" />
-
-    <link rel="canonical" href="https://doccloak.com/" />
+    <meta name="twitter:image" content="/apple-touch-icon.png" />
 
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
@@ -40,9 +37,8 @@
     {
       "@context": "https://schema.org",
       "@type": "SoftwareApplication",
-      "name": "DocCloak",
+      "name": "Privacy Maker",
       "description": "Open-source, browser-only document anonymizer that strips personally identifiable information (PII) from documents before they are shared with AI services such as ChatGPT, Claude, or Gemini. All processing happens locally in the browser via WebAssembly - no data is sent to any server.",
-      "url": "https://doccloak.com/",
       "applicationCategory": "SecurityApplication",
       "operatingSystem": "Web Browser",
       "browserRequirements": "Requires a modern browser with WebAssembly support",
@@ -52,13 +48,12 @@
         "priceCurrency": "USD"
       },
       "license": "https://www.gnu.org/licenses/agpl-3.0.html",
-      "softwareVersion": "0.10.2",
+      "softwareVersion": "0.1.0",
       "author": {
         "@type": "Organization",
-        "name": "DocCloak",
-        "url": "https://github.com/WLojek/DocCloak"
+        "name": "Privacy Maker"
       },
-      "codeRepository": "https://github.com/WLojek/DocCloak",
+      "isBasedOn": "https://github.com/WLojek/DocCloak",
       "featureList": [
         "Detects 12+ entity types: persons, emails, phones, SSNs, credit cards, addresses, companies",
         "Runs entirely in the browser - no backend, no API, no telemetry",
@@ -76,12 +71,12 @@
     <div id="root"></div>
     <noscript>
       <div style="max-width: 720px; margin: 4rem auto; padding: 2rem; font-family: system-ui, -apple-system, sans-serif; line-height: 1.6; color: #111;">
-        <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">DocCloak</h1>
-        <p style="font-size: 1.25rem; color: #555; margin-top: 0;"><strong>Use AI without leaking client data.</strong></p>
+        <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">Privacy Maker</h1>
+        <p style="font-size: 1.25rem; color: #555; margin-top: 0;"><strong>Make documents safe before using AI.</strong></p>
 
-        <p>DocCloak is an open-source document anonymizer that strips personally identifiable information (PII) before you share documents with AI services - and restores the original names in the AI's response. Everything runs in your browser. No server, no API calls, no data leaves your machine.</p>
+        <p>Privacy Maker is an open-source document anonymizer that strips personally identifiable information (PII) before you share documents with AI services - and restores the original names in the AI's response. Everything runs in your browser. No server, no API calls, no data leaves your machine.</p>
 
-        <p><strong>This page requires JavaScript to run.</strong> DocCloak performs all PII detection locally in your browser using WebAssembly, so JavaScript and a modern browser are required.</p>
+        <p><strong>This page requires JavaScript to run.</strong> Privacy Maker performs all PII detection locally in your browser using WebAssembly, so JavaScript and a modern browser are required.</p>
 
         <h2>Who it's for</h2>
         <ul>
@@ -95,9 +90,9 @@
         <h2>How it works</h2>
         <ol>
           <li><strong>Paste</strong> your document or upload a .doc/.docx file or an image (.png, .jpg) - text is extracted locally with OCR</li>
-          <li><strong>Redact</strong> - DocCloak detects names, emails, phone numbers, addresses, and other PII using a local ML model and regex patterns</li>
+          <li><strong>Redact</strong> - Privacy Maker detects names, emails, phone numbers, addresses, and other PII using a local ML model and regex patterns</li>
           <li><strong>Copy</strong> the anonymized text into any AI service (ChatGPT, Claude, Gemini, etc.) - or download the redacted document</li>
-          <li><strong>Restore</strong> - paste the AI's response back into DocCloak to replace placeholders with the original names</li>
+          <li><strong>Restore</strong> - paste the AI's response back into Privacy Maker to replace placeholders with the original names</li>
         </ol>
 
         <h2>Features</h2>
@@ -111,7 +106,7 @@
           <li>Open source under AGPL-3.0 - every line of code is auditable on GitHub</li>
         </ul>
 
-        <p><a href="https://github.com/WLojek/DocCloak">View source on GitHub</a></p>
+        <p>Privacy Maker is based on the open-source <a href="https://github.com/WLojek/DocCloak">DocCloak</a> project (AGPL-3.0).</p>
       </div>
     </noscript>
     <script type="module" src="/src/main.tsx"></script>

@@ -130,7 +130,7 @@ export function useAnonymizer() {
         }
       })
       .catch((err) => {
-        console.error('[DocCloak] Detection failed:', err);
+        console.error('[Privacy Maker] Detection failed:', err);
         if (requestId === latestRequestRef.current) {
           setAnonymizing(false);
           setDetectionProgress(null);
@@ -315,7 +315,7 @@ export function useAnonymizer() {
       sessionRef.current.clear();
       return { success: true };
     } catch (err) {
-      console.error('[DocCloak] Failed to read file:', err);
+      console.error('[Privacy Maker] Failed to read file:', err);
       return { success: false, error: err instanceof Error ? err.message : String(err) };
     }
   }, [resetImageState]);
@@ -342,7 +342,7 @@ export function useAnonymizer() {
       sessionRef.current.clear();
       return { success: true };
     } catch (err) {
-      console.error('[DocCloak] OCR failed:', err);
+      console.error('[Privacy Maker] OCR failed:', err);
       return { success: false, error: err instanceof Error ? err.message : String(err) };
     } finally {
       setOcrProgress(null);

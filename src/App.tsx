@@ -12,9 +12,8 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { DictionaryBar } from './ui/components/DictionaryBar.tsx';
-import { Lock, Settings, ArrowRight, Languages, Check, Plus, X, ChevronDown, Info, FileText, Image as ImageIcon, Download, Github, RotateCw } from 'lucide-react';
+import { Lock, ShieldCheck, Settings, ArrowRight, Languages, Check, Plus, X, ChevronDown, Info, FileText, Image as ImageIcon, Download, Github, RotateCw } from 'lucide-react';
 import { isImageFile } from '@doccloak/core/dom';
-import logoSrc from './ui/assets/doc-cloak-logo-light.png';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useToast } from './ui/components/Toast.tsx';
 import { Hero, TrustBand, Audience, HowItWorks, FAQ } from './ui/components/Landing.tsx';
@@ -125,7 +124,7 @@ export default function App() {
       triggerBlobDownload(blob, `${baseName}_redacted.${ext}`);
       showToast(t.textOutput.downloaded);
     } catch (err) {
-      console.error('[DocCloak] Export failed:', err);
+      console.error('[Privacy Maker] Export failed:', err);
       showToast(t.textOutput.exportFailed ?? 'Export failed.');
     } finally {
       setDownloading(false);
@@ -141,7 +140,7 @@ export default function App() {
       triggerBlobDownload(blob, `${baseName}_redacted.png`);
       showToast(t.textOutput.downloaded);
     } catch (err) {
-      console.error('[DocCloak] Image export failed:', err);
+      console.error('[Privacy Maker] Image export failed:', err);
       showToast(t.textOutput.exportFailed ?? 'Export failed.');
     } finally {
       setDownloading(false);
@@ -265,10 +264,15 @@ export default function App() {
       {/* Header */}
       <header className={`sticky top-0 z-30 px-6 transition-all duration-200 chrome-material ${scrolled ? 'py-2 border-b border-[#E5E5E0] shadow-[0_1px_0_0_rgba(17,17,17,0.04)]' : 'py-3 border-b border-transparent'}`}>
         <div className="max-w-6xl mx-auto flex items-center justify-between gap-2">
-          <div className="flex items-center gap-3 shrink-0">
-            <img src={logoSrc} alt="DocCloak" className={`transition-all duration-200 ${scrolled ? 'h-7' : 'h-9'}`} />
+          <div className="flex items-center gap-2.5 shrink-0">
+            <span
+              className={`inline-flex items-center justify-center rounded-md bg-[#0D5E63] text-[#F9F9F7] transition-all duration-200 shrink-0 ${scrolled ? 'h-7 w-7' : 'h-9 w-9'}`}
+              aria-hidden="true"
+            >
+              <ShieldCheck className={`transition-all duration-200 ${scrolled ? 'w-4 h-4' : 'w-5 h-5'}`} />
+            </span>
             <span className={`font-serif tracking-tight leading-none text-[#111111] font-medium transition-all duration-200 ${scrolled ? 'text-xl' : 'text-2xl'}`}>
-              DocCloak
+              Privacy Maker
             </span>
           </div>
           <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
@@ -714,7 +718,7 @@ export default function App() {
             className="label-meta text-[#111111] hover:underline flex items-center gap-2.5 leading-none"
           >
             <Github className="w-3.5 h-3.5 shrink-0 -translate-y-px" />
-            <span>Open source on GitHub · AGPL-3.0</span>
+            <span>Based on DocCloak (open source) · AGPL-3.0</span>
           </a>
           <div className="relative">
             <button
@@ -734,7 +738,7 @@ export default function App() {
             )}
           </div>
           <p className="label-meta text-muted-foreground/80 leading-none mt-2 pt-3 border-t border-[#E5E5E0] w-full">
-            © {new Date().getFullYear()} DocCloak v{__APP_VERSION__} · core {__CORE_VERSION__} · Built by Witold Łojek
+            © {new Date().getFullYear()} Privacy Maker v{__APP_VERSION__} · core {__CORE_VERSION__} · Based on DocCloak by Witold Łojek
           </p>
         </div>
       </footer>

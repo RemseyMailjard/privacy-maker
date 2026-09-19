@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import { ENTITY_COLORS } from '@doccloak/core';
 import type { ReplacementEntry } from '@doccloak/core';
 import { Button } from '@/components/ui/button';
-import { Copy, Check, Shield } from 'lucide-react';
+import { Copy, Check, Shield, FileCheck } from 'lucide-react';
 import { useTranslation } from '../../i18n/LanguageContext.tsx';
 import { useToast } from './Toast.tsx';
 
@@ -10,13 +10,14 @@ interface TextOutputProps {
   value: string;
   entries: ReplacementEntry[];
   loading?: boolean;
+  onDownloadCertificate?: () => void;
 }
 
 function escapeRegExp(s: string): string {
   return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-export function TextOutput({ value, entries, loading }: TextOutputProps) {
+export function TextOutput({ value, entries, loading, onDownloadCertificate }: TextOutputProps) {
   const { t } = useTranslation();
   const { showToast } = useToast();
   const [copied, setCopied] = useState(false);
@@ -101,10 +102,18 @@ export function TextOutput({ value, entries, loading }: TextOutputProps) {
           {t.textOutput.title}
         </h3>
         {value && (
-          <Button variant="ghost" size="sm" onClick={handleCopy} className="gap-1.5 h-7 text-[#525252] hover:bg-[#E5E5E0] hover:text-[#111111]">
-            {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
-            {copied ? t.textOutput.copied : t.textOutput.copy}
-          </Button>
+          <div className="flex items-center gap-1">
+            {onDownloadCertificate && (
+              <Button variant="ghost" size="sm" onClick={onDownloadCertificate} className="gap-1.5 h-7 text-[#525252] hover:bg-[#E5E5E0] hover:text-[#111111]">
+                <FileCheck className="w-3 h-3" />
+                {t.textOutput.downloadCertificate}
+              </Button>
+            )}
+            <Button variant="ghost" size="sm" onClick={handleCopy} className="gap-1.5 h-7 text-[#525252] hover:bg-[#E5E5E0] hover:text-[#111111]">
+              {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
+              {copied ? t.textOutput.copied : t.textOutput.copy}
+            </Button>
+          </div>
         )}
       </div>
       <div className="flex-1 min-h-[200px] p-4 text-foreground text-sm leading-relaxed whitespace-pre-wrap">

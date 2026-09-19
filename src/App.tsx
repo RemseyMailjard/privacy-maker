@@ -20,6 +20,7 @@ import { Hero, TrustBand, Audience, HowItWorks, FAQ } from './ui/components/Land
 import { PROVIDERS, REGEX_REGIONS } from '@doccloak/core';
 import { PROVIDER_SIZES, getRecommendedProviderId } from './engine.ts';
 import type { RegexRegionId } from '@doccloak/core';
+import { generateCertificateText } from './ui/certificate.ts';
 
 function formatBytes(bytes: number): string {
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
@@ -146,6 +147,38 @@ export default function App() {
       setDownloading(false);
     }
   }, [exportRedactedImage, fileName, triggerBlobDownload, showToast, t]);
+
+  const handleDownloadCertificate = useCallback(async () => {
+    try {
+      const providerLabel = PROVIDERS.find((p) => p.id === activeProvider)?.label ?? activeProvider;
+      const regexRegionLabel = t.settings.regexRegions[regexRegion] ?? regexRegion;
+      const text = await generateCertificateText({
+        t,
+        entities,
+        excludedIndices,
+        replacementMode,
+        providerLabel,
+        threshold,
+        regexEnabled: regexRules,
+        regexRegionLabel,
+        customLabels,
+        dictionaryCount: dictionary.length,
+        anonymizedText,
+        appVersion: __APP_VERSION__,
+        coreVersion: __CORE_VERSION__,
+      });
+      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      triggerBlobDownload(blob, 'privacy-maker-certificate.txt');
+      showToast(t.textOutput.downloaded);
+    } catch (err) {
+      console.error('[Privacy Maker] Certificate generation failed:', err);
+      showToast(t.textOutput.exportFailed ?? 'Export failed.');
+    }
+  }, [
+    t, entities, excludedIndices, replacementMode, activeProvider, threshold,
+    regexRules, regexRegion, customLabels, dictionary, anonymizedText,
+    triggerBlobDownload, showToast,
+  ]);
 
   // Keyboard shortcut: Cmd+Enter / Ctrl+Enter to redact
   useEffect(() => {
@@ -571,7 +604,7 @@ export default function App() {
             <TextInput value={inputText} onChange={handleInputChange} onClear={handleClear} entities={entities} onAddEntity={addManualEntity} onRemoveEntity={removeEntity} fileName={fileName} onLoadFile={loadFile} onRemoveFile={removeFile} />
           </div>
           <div className="bg-[#FFFFFF] border-t md:border-t-0 border-[#C8C5BC] flex flex-col">
-            <TextOutput value={anonymizedText} entries={entries} loading={anonymizing} />
+            <TextOutput value={anonymizedText} entries={entries} loading={anonymizing} onDownloadCertificate={entries.length > 0 ? handleDownloadCertificate : undefined} />
           </div>
         </div>
 

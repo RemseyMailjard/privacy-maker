@@ -75,6 +75,32 @@ export interface Translations {
     downloaded: string;
     exportFailed: string;
     nextStepHint: string;
+    downloadCertificate: string;
+  };
+  certificate: {
+    title: string;
+    generatedAt: string;
+    versions: (appVersion: string, coreVersion: string) => string;
+    configTitle: string;
+    model: string;
+    sensitivity: string;
+    replacementStyleLabel: string;
+    regexRules: string;
+    regexRegion: string;
+    disabled: string;
+    customLabelsLabel: string;
+    customDictionaryLabel: string;
+    none: string;
+    summaryTitle: string;
+    totalDetected: (n: number) => string;
+    redacted: (n: number) => string;
+    keptVisible: (n: number) => string;
+    byType: string;
+    integrityTitle: string;
+    integrityHash: string;
+    integrityNote: string;
+    verificationTitle: string;
+    verificationBody: string;
   };
   redactButton: {
     redact: string;

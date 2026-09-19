@@ -13,6 +13,7 @@ import type { OcrWord } from '@doccloak/core/dom';
 import { useTranslation } from '../../i18n/LanguageContext.tsx';
 import { loadDictionary, saveDictionary, mergeDictionaryEntities } from '../dictionary.ts';
 import type { DictionaryEntry } from '../dictionary.ts';
+import { mergeKvkEntities } from '../nlRules.ts';
 
 export function useAnonymizer() {
   const { language } = useTranslation();
@@ -117,8 +118,11 @@ export function useAnonymizer() {
         if (requestId === latestRequestRef.current) {
           // Dictionary words are always redacted; detected entities win overlaps
           const withDictionary = mergeDictionaryEntities(text, results, dictionary);
-          setEntities(withDictionary);
-          rebuildAnonymization(text, withDictionary, excluded);
+          // KvK-nummers (Dutch Chamber of Commerce numbers) are flagged when
+          // introduced by a recognizable label; detected entities still win overlaps
+          const withKvk = mergeKvkEntities(text, withDictionary);
+          setEntities(withKvk);
+          rebuildAnonymization(text, withKvk, excluded);
           setAnonymizing(false);
           setDetectionProgress(null);
           // Scroll the tool back into view in case the page has drifted.

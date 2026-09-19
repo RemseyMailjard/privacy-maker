@@ -71,8 +71,8 @@ export const fr: Translations = {
     wordCount: (n) => `${n} mot${n !== 1 ? 's' : ''}`,
     selectToTag: 'Sélectionnez du texte pour le taguer manuellement',
     uploadDocx: 'Importer un document ou une image',
-    uploadDocxSub: '.doc / .docx / .png / .jpg - le texte de l\'image est extrait localement (OCR)',
-    unsupportedFormat: 'Format non pris en charge. Veuillez importer un fichier .doc, .docx ou une image.',
+    uploadDocxSub: '.doc / .docx / .pdf / .png / .jpg - le texte de l\'image est extrait localement (OCR)',
+    unsupportedFormat: 'Format non pris en charge. Veuillez importer un fichier .doc, .docx, .pdf ou une image.',
     removeFile: 'Supprimer le fichier',
     dropzoneOr: 'ou',
     dragging: 'Déposez pour charger le document',
@@ -93,6 +93,7 @@ export const fr: Translations = {
     emptyStateTip: 'Astuce : cliquez sur l\'icône d\'engrenage pour changer le modèle de détection, la langue ou la sensibilité.',
     downloadDocx: 'Télécharger le fichier protégé',
     downloadImage: 'Télécharger l\'image caviardée',
+    downloadPdf: 'Télécharger le PDF caviardé',
     downloaded: 'Téléchargé',
     exportFailed: 'Échec de l\'exportation. Ce format de fichier n\'est peut-être pas pris en charge.',
     nextStepHint: 'Vous pouvez maintenant partager ce texte en toute sécurité avec des outils IA ou des collègues',
@@ -205,6 +206,10 @@ export const fr: Translations = {
   ocr: {
     processingTitle: 'Lecture du texte de l\'image...',
     processingDescription: 'L\'OCR s\'exécute localement dans votre navigateur - l\'image ne quitte jamais votre appareil',
+  },
+  pdf: {
+    processingTitle: 'Lecture du texte du PDF...',
+    processingDescription: 'S\'exécute localement dans votre navigateur - le fichier ne quitte jamais votre appareil',
   },
   landing: {
     hero: {

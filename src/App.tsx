@@ -70,10 +70,13 @@ export default function App() {
     fileName,
     hasDocxExtraction,
     hasImage,
+    hasPdf,
     ocrProgress,
+    pdfLoading,
     loadFile,
     exportDocx,
     exportRedactedImage,
+    exportRedactedPdf,
     removeFile,
     retryModelLoad,
     modelConsented,
@@ -147,6 +150,22 @@ export default function App() {
       setDownloading(false);
     }
   }, [exportRedactedImage, fileName, triggerBlobDownload, showToast, t]);
+
+  const handleDownloadPdf = useCallback(async () => {
+    if (!exportRedactedPdf) return;
+    setDownloading(true);
+    try {
+      const blob = await exportRedactedPdf();
+      const baseName = fileName?.replace(/\.pdf$/i, '') ?? 'document';
+      triggerBlobDownload(blob, `${baseName}_redacted.pdf`);
+      showToast(t.textOutput.downloaded);
+    } catch (err) {
+      console.error('[Privacy Maker] PDF export failed:', err);
+      showToast(t.textOutput.exportFailed ?? 'Export failed.');
+    } finally {
+      setDownloading(false);
+    }
+  }, [exportRedactedPdf, fileName, triggerBlobDownload, showToast, t]);
 
   const handleDownloadCertificate = useCallback(async () => {
     try {
@@ -259,6 +278,20 @@ export default function App() {
                 <p className="text-[10px] text-muted-foreground mt-1">{Math.round(ocrProgress * 100)}%</p>
               </div>
               <p className="text-sm text-[#525252]">{t.ocr.processingDescription}</p>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+      {/* PDF extraction overlay */}
+      {pdfLoading && (
+        <div role="dialog" aria-modal="true" aria-label={t.pdf.processingTitle} className="fixed inset-0 z-40 bg-[#F9F9F7]/80 flex items-center justify-center">
+          <Card className="border-[#111111] shadow-[4px_4px_0px_0px_#111111]">
+            <CardContent className="pt-8 pb-8 px-10 text-center">
+              <div className="w-12 h-12 border border-[#111111] flex items-center justify-center mx-auto mb-5">
+                <FileText className="w-6 h-6 text-[#111111]" />
+              </div>
+              <p className="font-serif text-lg font-medium tracking-tight mb-1">{t.pdf.processingTitle}</p>
+              <p className="text-sm text-[#525252] mt-3">{t.pdf.processingDescription}</p>
             </CardContent>
           </Card>
         </div>
@@ -592,6 +625,16 @@ export default function App() {
                 >
                   <Download className="w-3 h-3" />
                   {t.textOutput.downloadImage}
+                </button>
+              )}
+              {hasPdf && entries.length > 0 && (
+                <button
+                  onClick={handleDownloadPdf}
+                  disabled={downloading}
+                  className="pressable flex items-center gap-2 px-3 py-1.5 border border-[#C8C5BC] bg-[#FFFFFF] text-[#111111] hover:bg-[#111111] hover:text-[#F9F9F7] hover:border-[#111111] transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed text-xs font-medium"
+                >
+                  <Download className="w-3 h-3" />
+                  {t.textOutput.downloadPdf}
                 </button>
               )}
             </div>

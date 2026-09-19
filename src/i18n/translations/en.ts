@@ -71,8 +71,8 @@ export const en: Translations = {
     wordCount: (n) => `${n} word${n !== 1 ? 's' : ''}`,
     selectToTag: 'Select text to mark manually',
     uploadDocx: 'Upload Document or Image',
-    uploadDocxSub: '.doc / .docx / .png / .jpg - image text is extracted locally (OCR)',
-    unsupportedFormat: 'Unsupported format. Please upload a .doc, .docx, or image file.',
+    uploadDocxSub: '.doc / .docx / .pdf / .png / .jpg - image text is extracted locally (OCR)',
+    unsupportedFormat: 'Unsupported format. Please upload a .doc, .docx, .pdf, or image file.',
     removeFile: 'Remove file',
     dropzoneOr: 'or',
     dragging: 'Drop to load document',
@@ -93,6 +93,7 @@ export const en: Translations = {
     emptyStateTip: 'Tip: click the gear icon to change detection model, language, or sensitivity.',
     downloadDocx: 'Download Protected File',
     downloadImage: 'Download Redacted Image',
+    downloadPdf: 'Download Redacted PDF',
     downloaded: 'Downloaded',
     exportFailed: 'Export failed. This file format may not be supported.',
     nextStepHint: 'You can now safely share this text with AI tools or colleagues',
@@ -205,6 +206,10 @@ export const en: Translations = {
   ocr: {
     processingTitle: 'Reading text from image...',
     processingDescription: 'OCR runs locally in your browser - the image never leaves your device',
+  },
+  pdf: {
+    processingTitle: 'Reading text from PDF...',
+    processingDescription: 'Runs locally in your browser - the file never leaves your device',
   },
   landing: {
     hero: {

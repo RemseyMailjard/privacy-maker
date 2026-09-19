@@ -71,8 +71,8 @@ export const de: Translations = {
     wordCount: (n) => `${n} ${n === 1 ? 'Wort' : 'Wörter'}`,
     selectToTag: 'Text markieren, um manuell zu taggen',
     uploadDocx: 'Dokument oder Bild hochladen',
-    uploadDocxSub: '.doc / .docx / .png / .jpg - Bildtext wird lokal ausgelesen (OCR)',
-    unsupportedFormat: 'Nicht unterstütztes Format. Bitte laden Sie eine .doc-, .docx- oder Bilddatei hoch.',
+    uploadDocxSub: '.doc / .docx / .pdf / .png / .jpg - Bildtext wird lokal ausgelesen (OCR)',
+    unsupportedFormat: 'Nicht unterstütztes Format. Bitte laden Sie eine .doc-, .docx-, .pdf- oder Bilddatei hoch.',
     removeFile: 'Datei entfernen',
     dropzoneOr: 'oder',
     dragging: 'Ablegen, um Dokument zu laden',
@@ -93,6 +93,7 @@ export const de: Translations = {
     emptyStateTip: 'Tipp: Klicken Sie auf das Zahnradsymbol, um Erkennungsmodell, Sprache oder Empfindlichkeit zu ändern.',
     downloadDocx: 'Geschützte Datei herunterladen',
     downloadImage: 'Geschwärztes Bild herunterladen',
+    downloadPdf: 'Geschwärztes PDF herunterladen',
     downloaded: 'Heruntergeladen',
     exportFailed: 'Export fehlgeschlagen. Dieses Dateiformat wird möglicherweise nicht unterstützt.',
     nextStepHint: 'Sie können diesen Text jetzt sicher mit KI-Tools oder Kollegen teilen',
@@ -205,6 +206,10 @@ export const de: Translations = {
   ocr: {
     processingTitle: 'Text wird aus dem Bild gelesen...',
     processingDescription: 'OCR läuft lokal in Ihrem Browser - das Bild verlässt Ihr Gerät nicht',
+  },
+  pdf: {
+    processingTitle: 'Text wird aus PDF gelesen...',
+    processingDescription: 'Läuft lokal in Ihrem Browser - die Datei verlässt Ihr Gerät nicht',
   },
   landing: {
     hero: {

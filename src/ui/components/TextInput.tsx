@@ -251,7 +251,7 @@ export function TextInput({ value, onChange, onClear, entities, onAddEntity, onR
         <input
           ref={fileInputRef}
           type="file"
-          accept=".doc,.docx,.png,.jpg,.jpeg,.webp,.bmp,.gif"
+          accept=".doc,.docx,.pdf,.png,.jpg,.jpeg,.webp,.bmp,.gif"
           onChange={handleFileUpload}
           className="hidden"
         />

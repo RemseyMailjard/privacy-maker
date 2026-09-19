@@ -71,8 +71,8 @@ export const no: Translations = {
     wordCount: (n) => `${n} ord`,
     selectToTag: 'Merk tekst for å tagge manuelt',
     uploadDocx: 'Last opp dokument eller bilde',
-    uploadDocxSub: '.doc / .docx / .png / .jpg - tekst i bildet hentes ut lokalt (OCR)',
-    unsupportedFormat: 'Ustøttet format. Last opp en .doc-, .docx- eller bildefil.',
+    uploadDocxSub: '.doc / .docx / .pdf / .png / .jpg - tekst i bildet hentes ut lokalt (OCR)',
+    unsupportedFormat: 'Ustøttet format. Last opp en .doc-, .docx-, .pdf- eller bildefil.',
     removeFile: 'Fjern fil',
     dropzoneOr: 'eller',
     dragging: 'Slipp for å laste dokument',
@@ -93,6 +93,7 @@ export const no: Translations = {
     emptyStateTip: 'Tips: klikk på tannhjulikonet for å endre deteksjonsmodell, språk eller følsomhet.',
     downloadDocx: 'Last ned beskyttet fil',
     downloadImage: 'Last ned sladdet bilde',
+    downloadPdf: 'Last ned sladdet PDF',
     downloaded: 'Lastet ned',
     exportFailed: 'Eksport mislyktes. Dette filformatet støttes kanskje ikke.',
     nextStepHint: 'Du kan nå trygt dele denne teksten med AI-verktøy eller kolleger',
@@ -205,6 +206,10 @@ export const no: Translations = {
   ocr: {
     processingTitle: 'Leser tekst fra bildet...',
     processingDescription: 'OCR kjører lokalt i nettleseren din - bildet forlater aldri enheten din',
+  },
+  pdf: {
+    processingTitle: 'Leser tekst fra PDF...',
+    processingDescription: 'Kjører lokalt i nettleseren din - filen forlater aldri enheten din',
   },
   landing: {
     hero: {

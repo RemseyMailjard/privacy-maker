@@ -71,8 +71,8 @@ export const es: Translations = {
     wordCount: (n) => `${n} palabra${n !== 1 ? 's' : ''}`,
     selectToTag: 'Seleccione texto para etiquetar manualmente',
     uploadDocx: 'Subir documento o imagen',
-    uploadDocxSub: '.doc / .docx / .png / .jpg - el texto de la imagen se extrae localmente (OCR)',
-    unsupportedFormat: 'Formato no compatible. Sube un archivo .doc, .docx o una imagen.',
+    uploadDocxSub: '.doc / .docx / .pdf / .png / .jpg - el texto de la imagen se extrae localmente (OCR)',
+    unsupportedFormat: 'Formato no compatible. Sube un archivo .doc, .docx, .pdf o una imagen.',
     removeFile: 'Eliminar archivo',
     dropzoneOr: 'o',
     dragging: 'Suelte para cargar el documento',
@@ -93,6 +93,7 @@ export const es: Translations = {
     emptyStateTip: 'Consejo: haga clic en el icono del engranaje para cambiar el modelo de detección, el idioma o la sensibilidad.',
     downloadDocx: 'Descargar archivo protegido',
     downloadImage: 'Descargar imagen censurada',
+    downloadPdf: 'Descargar PDF censurado',
     downloaded: 'Descargado',
     exportFailed: 'Error al exportar. Es posible que este formato de archivo no sea compatible.',
     nextStepHint: 'Ahora puede compartir este texto de forma segura con herramientas de IA o colegas',
@@ -205,6 +206,10 @@ export const es: Translations = {
   ocr: {
     processingTitle: 'Leyendo texto de la imagen...',
     processingDescription: 'El OCR se ejecuta localmente en tu navegador - la imagen nunca sale de tu dispositivo',
+  },
+  pdf: {
+    processingTitle: 'Leyendo texto del PDF...',
+    processingDescription: 'Se ejecuta localmente en tu navegador - el archivo nunca sale de tu dispositivo',
   },
   landing: {
     hero: {

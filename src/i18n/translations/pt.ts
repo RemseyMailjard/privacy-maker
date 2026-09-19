@@ -71,8 +71,8 @@ export const pt: Translations = {
     wordCount: (n) => `${n} palavra${n !== 1 ? 's' : ''}`,
     selectToTag: 'Selecione texto para marcar manualmente',
     uploadDocx: 'Enviar documento ou imagem',
-    uploadDocxSub: '.doc / .docx / .png / .jpg - o texto da imagem é extraído localmente (OCR)',
-    unsupportedFormat: 'Formato não suportado. Envie um arquivo .doc, .docx ou uma imagem.',
+    uploadDocxSub: '.doc / .docx / .pdf / .png / .jpg - o texto da imagem é extraído localmente (OCR)',
+    unsupportedFormat: 'Formato não suportado. Envie um arquivo .doc, .docx, .pdf ou uma imagem.',
     removeFile: 'Remover arquivo',
     dropzoneOr: 'ou',
     dragging: 'Solte para carregar o documento',
@@ -93,6 +93,7 @@ export const pt: Translations = {
     emptyStateTip: 'Dica: clique no ícone de engrenagem para alterar o modelo de detecção, idioma ou sensibilidade.',
     downloadDocx: 'Baixar arquivo protegido',
     downloadImage: 'Baixar imagem censurada',
+    downloadPdf: 'Baixar PDF redigido',
     downloaded: 'Baixado',
     exportFailed: 'Falha na exportação. Este formato de arquivo pode não ser suportado.',
     nextStepHint: 'Agora você pode compartilhar este texto com segurança com ferramentas de IA ou colegas',
@@ -205,6 +206,10 @@ export const pt: Translations = {
   ocr: {
     processingTitle: 'Lendo texto da imagem...',
     processingDescription: 'O OCR é executado localmente no seu navegador - a imagem nunca sai do seu dispositivo',
+  },
+  pdf: {
+    processingTitle: 'Lendo texto do PDF...',
+    processingDescription: 'Executado localmente no seu navegador - o arquivo nunca sai do seu dispositivo',
   },
   landing: {
     hero: {

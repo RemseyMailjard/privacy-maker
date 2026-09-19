@@ -71,8 +71,8 @@ export const sv: Translations = {
     wordCount: (n) => `${n} ord`,
     selectToTag: 'Markera text för att tagga manuellt',
     uploadDocx: 'Ladda upp dokument eller bild',
-    uploadDocxSub: '.doc / .docx / .png / .jpg - text i bilden extraheras lokalt (OCR)',
-    unsupportedFormat: 'Formatet stöds inte. Ladda upp en .doc-, .docx- eller bildfil.',
+    uploadDocxSub: '.doc / .docx / .pdf / .png / .jpg - text i bilden extraheras lokalt (OCR)',
+    unsupportedFormat: 'Formatet stöds inte. Ladda upp en .doc-, .docx-, .pdf- eller bildfil.',
     removeFile: 'Ta bort fil',
     dropzoneOr: 'eller',
     dragging: 'Släpp för att ladda dokument',
@@ -93,6 +93,7 @@ export const sv: Translations = {
     emptyStateTip: 'Tips: klicka på kugghjulsikonen för att ändra detekteringsmodell, språk eller känslighet.',
     downloadDocx: 'Ladda ner skyddad fil',
     downloadImage: 'Ladda ner maskerad bild',
+    downloadPdf: 'Ladda ner maskerad PDF',
     downloaded: 'Nedladdad',
     exportFailed: 'Export misslyckades. Det här filformatet kanske inte stöds.',
     nextStepHint: 'Du kan nu säkert dela denna text med AI-verktyg eller kollegor',
@@ -205,6 +206,10 @@ export const sv: Translations = {
   ocr: {
     processingTitle: 'Läser text från bilden...',
     processingDescription: 'OCR körs lokalt i din webbläsare - bilden lämnar aldrig din enhet',
+  },
+  pdf: {
+    processingTitle: 'Läser text från PDF...',
+    processingDescription: 'Körs lokalt i din webbläsare - filen lämnar aldrig din enhet',
   },
   landing: {
     hero: {

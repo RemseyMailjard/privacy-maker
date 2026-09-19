@@ -44,4 +44,7 @@ for (const lang of TESSERACT_LANGS) {
   );
 }
 
-console.log('[copy-assets] ONNX Runtime and Tesseract assets copied to public/');
+// PDF.js worker (text extraction + page rendering runs off the main thread)
+copyFileSync('node_modules/pdfjs-dist/build/pdf.worker.min.mjs', 'public/pdf.worker.min.mjs');
+
+console.log('[copy-assets] ONNX Runtime, Tesseract and PDF.js assets copied to public/');

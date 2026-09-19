@@ -72,6 +72,7 @@ export interface Translations {
     emptyStateTip: string;
     downloadDocx: string;
     downloadImage: string;
+    downloadPdf: string;
     downloaded: string;
     exportFailed: string;
     nextStepHint: string;
@@ -167,6 +168,10 @@ export interface Translations {
     description: string;
   };
   ocr: {
+    processingTitle: string;
+    processingDescription: string;
+  };
+  pdf: {
     processingTitle: string;
     processingDescription: string;
   };

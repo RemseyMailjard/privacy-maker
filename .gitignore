@@ -12,6 +12,9 @@ public/ort-wasm-simd-threaded.jsep.wasm
 public/ort-wasm-simd-threaded.mjs
 public/ort-wasm-simd-threaded.jsep.mjs
 
+# PDF.js worker (copied from node_modules after npm install)
+public/pdf.worker.min.mjs
+
 # Build output
 dist/
 build/

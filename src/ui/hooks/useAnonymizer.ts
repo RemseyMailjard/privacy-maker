@@ -10,10 +10,14 @@ import { readDocText, writeAnonymizedDoc } from '@doccloak/core';
 import { isImageFile, renderRedactedImage } from '@doccloak/core/dom';
 import { loadImageToCanvas, recognizeCanvas } from '../../ocr.web.ts';
 import type { OcrWord } from '@doccloak/core/dom';
+import { isPdfFile, extractPdfText, renderRedactedPdf } from '../../pdf.web.ts';
 import { useTranslation } from '../../i18n/LanguageContext.tsx';
 import { loadDictionary, saveDictionary, mergeDictionaryEntities } from '../dictionary.ts';
 import type { DictionaryEntry } from '../dictionary.ts';
 import { mergeKvkEntities } from '../nlRules.ts';
+import { mergeRelationalEntities } from '../relationalRules.ts';
+
+type PdfWord = OcrWord & { pageIndex: number };
 
 export function useAnonymizer() {
   const { language } = useTranslation();
@@ -45,8 +49,12 @@ export function useAnonymizer() {
   const [docxFileName, setDocxFileName] = useState<string | null>(null);
   const [imageFileName, setImageFileName] = useState<string | null>(null);
   const [ocrProgress, setOcrProgress] = useState<number | null>(null);
+  const [pdfFile, setPdfFile] = useState<File | null>(null);
+  const [pdfFileName, setPdfFileName] = useState<string | null>(null);
+  const [pdfLoading, setPdfLoading] = useState(false);
   const imageCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const ocrWordsRef = useRef<OcrWord[]>([]);
+  const pdfWordsRef = useRef<PdfWord[]>([]);
   const sessionRef = useRef(new AnonymizationSession());
   const latestRequestRef = useRef(0);
 
@@ -121,8 +129,12 @@ export function useAnonymizer() {
           // KvK-nummers (Dutch Chamber of Commerce numbers) are flagged when
           // introduced by a recognizable label; detected entities still win overlaps
           const withKvk = mergeKvkEntities(text, withDictionary);
-          setEntities(withKvk);
-          rebuildAnonymization(text, withKvk, excluded);
+          // Dutch relational/role references ("zijn buurvrouw", "de opa van
+          // Marieke") indirectly identify a person; detected entities and
+          // KvK hits still win overlaps.
+          const withRelational = mergeRelationalEntities(text, withKvk);
+          setEntities(withRelational);
+          rebuildAnonymization(text, withRelational, excluded);
           setAnonymizing(false);
           setDetectionProgress(null);
           // Scroll the tool back into view in case the page has drifted.
@@ -285,6 +297,12 @@ export function useAnonymizer() {
     ocrWordsRef.current = [];
   }, []);
 
+  const resetPdfState = useCallback(() => {
+    setPdfFile(null);
+    setPdfFileName(null);
+    pdfWordsRef.current = [];
+  }, []);
+
   const loadDocxFile = useCallback(async (file: File): Promise<{ success: boolean; error?: string }> => {
     if (!isSupportedFile(file.name)) {
       return { success: false, error: 'unsupported' };
@@ -309,6 +327,7 @@ export function useAnonymizer() {
       }
 
       resetImageState();
+      resetPdfState();
       setDocxFile(file);
       setDocxFileName(file.name);
       setInputText(plainText);
@@ -322,7 +341,7 @@ export function useAnonymizer() {
       console.error('[Privacy Maker] Failed to read file:', err);
       return { success: false, error: err instanceof Error ? err.message : String(err) };
     }
-  }, [resetImageState]);
+  }, [resetImageState, resetPdfState]);
 
   const loadImageFile = useCallback(async (file: File): Promise<{ success: boolean; error?: string }> => {
     try {
@@ -335,6 +354,7 @@ export function useAnonymizer() {
 
       imageCanvasRef.current = canvas;
       ocrWordsRef.current = words;
+      resetPdfState();
       setImageFileName(file.name);
       setDocxFile(null);
       setDocxFileName(null);
@@ -351,13 +371,43 @@ export function useAnonymizer() {
     } finally {
       setOcrProgress(null);
     }
-  }, [language]);
+  }, [language, resetPdfState]);
 
-  // Route uploads by type: images go through OCR, documents through the docx reader
+  const loadPdfFile = useCallback(async (file: File): Promise<{ success: boolean; error?: string }> => {
+    try {
+      setPdfLoading(true);
+      const { text, words } = await extractPdfText(file);
+      if (!text.trim()) {
+        return { success: false, error: 'no-text' };
+      }
+
+      pdfWordsRef.current = words;
+      resetImageState();
+      setPdfFile(file);
+      setPdfFileName(file.name);
+      setDocxFile(null);
+      setDocxFileName(null);
+      setInputText(text);
+      setAnonymizedText('');
+      setEntities([]);
+      setEntries([]);
+      setExcludedIndices(new Set());
+      sessionRef.current.clear();
+      return { success: true };
+    } catch (err) {
+      console.error('[Privacy Maker] PDF extraction failed:', err);
+      return { success: false, error: err instanceof Error ? err.message : String(err) };
+    } finally {
+      setPdfLoading(false);
+    }
+  }, [resetImageState]);
+
+  // Route uploads by type: images go through OCR, PDFs through pdf.js, other documents through the docx reader
   const loadFile = useCallback(async (file: File): Promise<{ success: boolean; error?: string }> => {
     if (isImageFile(file.name)) return loadImageFile(file);
+    if (isPdfFile(file.name)) return loadPdfFile(file);
     return loadDocxFile(file);
-  }, [loadImageFile, loadDocxFile]);
+  }, [loadImageFile, loadPdfFile, loadDocxFile]);
 
   const exportRedactedImage = useCallback(async (): Promise<Blob> => {
     const canvas = imageCanvasRef.current;
@@ -367,6 +417,14 @@ export function useAnonymizer() {
     const activeEntities = entities.filter((_, i) => !excludedIndices.has(i));
     return renderRedactedImage(canvas, ocrWordsRef.current, activeEntities);
   }, [entities, excludedIndices]);
+
+  const exportRedactedPdf = useCallback(async (): Promise<Blob> => {
+    if (!pdfFile || entities.length === 0) {
+      throw new Error('No PDF or entities to export');
+    }
+    const activeEntities = entities.filter((_, i) => !excludedIndices.has(i));
+    return renderRedactedPdf(pdfFile, pdfWordsRef.current, activeEntities);
+  }, [pdfFile, entities, excludedIndices]);
 
   const exportDocx = useCallback(async (): Promise<Blob> => {
     if (!docxFile || entities.length === 0) {
@@ -409,13 +467,14 @@ export function useAnonymizer() {
     setDocxFile(null);
     setDocxFileName(null);
     resetImageState();
+    resetPdfState();
     setInputText('');
     setAnonymizedText('');
     setEntities([]);
     setEntries([]);
     setExcludedIndices(new Set());
     sessionRef.current.clear();
-  }, [resetImageState]);
+  }, [resetImageState, resetPdfState]);
 
   const clear = useCallback(() => {
     setInputText('');
@@ -426,8 +485,9 @@ export function useAnonymizer() {
     setDocxFile(null);
     setDocxFileName(null);
     resetImageState();
+    resetPdfState();
     sessionRef.current.clear();
-  }, [resetImageState]);
+  }, [resetImageState, resetPdfState]);
 
   return {
     inputText,
@@ -447,10 +507,13 @@ export function useAnonymizer() {
     customLabels,
     docxFileName,
     imageFileName,
-    fileName: docxFileName ?? imageFileName,
+    pdfFileName,
+    fileName: docxFileName ?? imageFileName ?? pdfFileName,
     hasDocxExtraction: docxFile !== null,
     hasImage: imageFileName !== null,
+    hasPdf: pdfFile !== null,
     ocrProgress,
+    pdfLoading,
     handleInputChange,
     anonymize,
     addManualEntity,
@@ -473,6 +536,7 @@ export function useAnonymizer() {
     loadFile,
     exportDocx,
     exportRedactedImage,
+    exportRedactedPdf,
     removeFile,
     retryModelLoad: startModelLoad,
     modelConsented,

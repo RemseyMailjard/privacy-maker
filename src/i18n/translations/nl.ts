@@ -71,8 +71,8 @@ export const nl: Translations = {
     wordCount: (n) => `${n} woord${n !== 1 ? 'en' : ''}`,
     selectToTag: 'Selecteer tekst om handmatig te markeren',
     uploadDocx: 'Document of afbeelding uploaden',
-    uploadDocxSub: '.doc / .docx / .png / .jpg - tekst uit afbeeldingen wordt lokaal geëxtraheerd (OCR)',
-    unsupportedFormat: 'Niet-ondersteund formaat. Upload een .doc-, .docx- of afbeeldingsbestand.',
+    uploadDocxSub: '.doc / .docx / .pdf / .png / .jpg - tekst uit afbeeldingen wordt lokaal geëxtraheerd (OCR)',
+    unsupportedFormat: 'Niet-ondersteund formaat. Upload een .doc-, .docx-, .pdf- of afbeeldingsbestand.',
     removeFile: 'Bestand verwijderen',
     dropzoneOr: 'of',
     dragging: 'Zet neer om document te laden',
@@ -93,6 +93,7 @@ export const nl: Translations = {
     emptyStateTip: 'Tip: klik op het tandwielicoon om detectiemodel, taal of gevoeligheid te wijzigen.',
     downloadDocx: 'Beschermd bestand downloaden',
     downloadImage: 'Geanonimiseerde afbeelding downloaden',
+    downloadPdf: 'Geanonimiseerde PDF downloaden',
     downloaded: 'Gedownload',
     exportFailed: 'Exporteren mislukt. Dit bestandsformaat wordt mogelijk niet ondersteund.',
     nextStepHint: 'U kunt deze tekst nu veilig delen met AI-tools of collega’s',
@@ -205,6 +206,10 @@ export const nl: Translations = {
   ocr: {
     processingTitle: 'Tekst uit afbeelding lezen...',
     processingDescription: 'OCR draait lokaal in uw browser - de afbeelding verlaat nooit uw apparaat',
+  },
+  pdf: {
+    processingTitle: 'Tekst uit PDF lezen...',
+    processingDescription: 'Draait lokaal in uw browser - het bestand verlaat nooit uw apparaat',
   },
   landing: {
     hero: {

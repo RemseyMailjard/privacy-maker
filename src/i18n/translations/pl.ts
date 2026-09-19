@@ -75,8 +75,8 @@ export const pl: Translations = {
     },
     selectToTag: 'Zaznacz tekst, aby oznaczyć ręcznie',
     uploadDocx: 'Wgraj dokument lub obraz',
-    uploadDocxSub: '.doc / .docx / .png / .jpg - tekst z obrazu jest odczytywany lokalnie (OCR)',
-    unsupportedFormat: 'Nieobsługiwany format. Prześlij plik .doc, .docx lub obraz.',
+    uploadDocxSub: '.doc / .docx / .pdf / .png / .jpg - tekst z obrazu jest odczytywany lokalnie (OCR)',
+    unsupportedFormat: 'Nieobsługiwany format. Prześlij plik .doc, .docx, .pdf lub obraz.',
     removeFile: 'Usuń plik',
     dropzoneOr: 'lub',
     dragging: 'Upuść, aby załadować dokument',
@@ -97,6 +97,7 @@ export const pl: Translations = {
     emptyStateTip: 'Wskazówka: kliknij ikonę koła zębatego, aby zmienić model wykrywania, język lub czułość.',
     downloadDocx: 'Pobierz chroniony plik',
     downloadImage: 'Pobierz zredagowany obraz',
+    downloadPdf: 'Pobierz zredagowany PDF',
     downloaded: 'Pobrano',
     exportFailed: 'Eksport nie powiódł się. Ten format pliku może nie być obsługiwany.',
     nextStepHint: 'Możesz teraz bezpiecznie udostępnić ten tekst narzędziom AI lub współpracownikom',
@@ -213,6 +214,10 @@ export const pl: Translations = {
   ocr: {
     processingTitle: 'Odczytywanie tekstu z obrazu...',
     processingDescription: 'OCR działa lokalnie w przeglądarce - obraz nie opuszcza Twojego urządzenia',
+  },
+  pdf: {
+    processingTitle: 'Odczytywanie tekstu z PDF...',
+    processingDescription: 'Działa lokalnie w przeglądarce - plik nie opuszcza Twojego urządzenia',
   },
   landing: {
     hero: {

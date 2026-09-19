@@ -9,6 +9,10 @@ export interface Translations {
     language: string;
     settings: string;
     skipToTool: string;
+    installApp: string;
+    installIosTitle: string;
+    installIosStep1: string;
+    installIosStep2: string;
   };
   settings: {
     detectionSensitivity: string;

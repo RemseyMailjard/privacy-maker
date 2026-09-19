@@ -9,6 +9,10 @@ export const pt: Translations = {
     language: 'Idioma',
     settings: 'Configurações',
     skipToTool: 'Ir para a ferramenta',
+    installApp: 'Instalar app',
+    installIosTitle: 'Instalar a app no iOS',
+    installIosStep1: 'Toque no ícone de partilhar na parte inferior do Safari',
+    installIosStep2: "Escolha 'Adicionar ao ecrã principal'",
   },
   settings: {
     detectionSensitivity: 'Sensibilidade de detecção',

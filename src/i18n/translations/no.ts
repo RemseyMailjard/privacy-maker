@@ -9,6 +9,10 @@ export const no: Translations = {
     language: 'Språk',
     settings: 'Innstillinger',
     skipToTool: 'Hopp til verktøyet',
+    installApp: 'Installer appen',
+    installIosTitle: 'Installer appen på iOS',
+    installIosStep1: 'Trykk på del-ikonet nederst i Safari',
+    installIosStep2: "Velg 'Legg til på Hjem-skjerm'",
   },
   settings: {
     detectionSensitivity: 'Deteksjonsfølsomhet',

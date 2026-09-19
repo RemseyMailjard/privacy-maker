@@ -3,6 +3,7 @@ import { TextOutput } from './ui/components/TextOutput.tsx';
 import { EntityTable } from './ui/components/EntityTable.tsx';
 import { DeAnonymize } from './ui/components/DeAnonymize.tsx';
 import { useAnonymizer } from './ui/hooks/useAnonymizer.ts';
+import { usePwaInstall } from './ui/hooks/usePwaInstall.ts';
 import { useTranslation } from './i18n/LanguageContext.tsx';
 import { languages } from './i18n/translations/index.ts';
 import { Button } from '@/components/ui/button';
@@ -12,7 +13,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { DictionaryBar } from './ui/components/DictionaryBar.tsx';
-import { Lock, ShieldCheck, Settings, ArrowRight, Languages, Check, Plus, X, ChevronDown, Info, FileText, Image as ImageIcon, Download, Linkedin, RotateCw } from 'lucide-react';
+import { Lock, ShieldCheck, Settings, ArrowRight, Languages, Check, Plus, X, ChevronDown, Info, FileText, Image as ImageIcon, Download, Linkedin, RotateCw, Share } from 'lucide-react';
 import { isImageFile } from '@doccloak/core/dom';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useToast } from './ui/components/Toast.tsx';
@@ -84,7 +85,9 @@ export default function App() {
   } = useAnonymizer();
 
   const { showToast } = useToast();
+  const { canInstall, needsIosInstructions, promptInstall } = usePwaInstall();
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [iosInstallOpen, setIosInstallOpen] = useState(false);
   const [newLabelInput, setNewLabelInput] = useState('');
   const [labelsExpanded, setLabelsExpanded] = useState(false);
   const [footerTooltipOpen, setFooterTooltipOpen] = useState(false);
@@ -342,6 +345,49 @@ export default function App() {
             </span>
           </div>
           <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+            {/* Install app: the one clearly-labeled button for turning this into
+                an installed PWA. Chromium gets a real prompt; iOS Safari (which
+                never fires beforeinstallprompt) gets Add-to-Home-Screen steps.
+                Hidden entirely once installed or on browsers that support neither. */}
+            {canInstall && (
+              <Button
+                onClick={promptInstall}
+                variant="solid"
+                size="sm"
+                className="h-8 gap-1.5 px-2.5 sm:px-3"
+                aria-label={t.header.installApp}
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline text-xs">{t.header.installApp}</span>
+              </Button>
+            )}
+            {needsIosInstructions && (
+              <Popover open={iosInstallOpen} onOpenChange={setIosInstallOpen}>
+                <PopoverTrigger asChild>
+                  <Button variant="solid" size="sm" className="h-8 gap-1.5 px-2.5 sm:px-3" aria-label={t.header.installApp}>
+                    <Download className="w-3.5 h-3.5" />
+                    <span className="hidden sm:inline text-xs">{t.header.installApp}</span>
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent align="end" className="w-72 p-4">
+                  <p className="text-sm font-semibold text-[#242424] mb-3">{t.header.installIosTitle}</p>
+                  <ol className="space-y-2.5 text-sm text-[#242424]">
+                    <li className="flex items-center gap-2.5">
+                      <span className="flex items-center justify-center w-5 h-5 rounded-full bg-[#0078D4] text-white text-[11px] font-semibold shrink-0">1</span>
+                      <span className="flex items-center gap-1.5">
+                        <Share className="w-3.5 h-3.5 text-[#616161] shrink-0" />
+                        {t.header.installIosStep1}
+                      </span>
+                    </li>
+                    <li className="flex items-center gap-2.5">
+                      <span className="flex items-center justify-center w-5 h-5 rounded-full bg-[#0078D4] text-white text-[11px] font-semibold shrink-0">2</span>
+                      <span>{t.header.installIosStep2}</span>
+                    </li>
+                  </ol>
+                </PopoverContent>
+              </Popover>
+            )}
+
             {/* Language switcher */}
             <Popover>
               <PopoverTrigger asChild>

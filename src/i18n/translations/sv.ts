@@ -9,6 +9,10 @@ export const sv: Translations = {
     language: 'Språk',
     settings: 'Inställningar',
     skipToTool: 'Hoppa till verktyget',
+    installApp: 'Installera appen',
+    installIosTitle: 'Installera appen på iOS',
+    installIosStep1: 'Tryck på dela-ikonen längst ned i Safari',
+    installIosStep2: "Välj 'Lägg till på hemskärmen'",
   },
   settings: {
     detectionSensitivity: 'Detektionskänslighet',

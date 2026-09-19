@@ -9,6 +9,10 @@ export const en: Translations = {
     language: 'Language',
     settings: 'Settings',
     skipToTool: 'Skip to the tool',
+    installApp: 'Install app',
+    installIosTitle: 'Install the app on iOS',
+    installIosStep1: 'Tap the Share icon at the bottom of Safari',
+    installIosStep2: "Choose 'Add to Home Screen'",
   },
   settings: {
     detectionSensitivity: 'Detection Sensitivity',

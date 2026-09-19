@@ -9,6 +9,10 @@ export const nl: Translations = {
     language: 'Taal',
     settings: 'Instellingen',
     skipToTool: 'Ga naar de tool',
+    installApp: 'App downloaden',
+    installIosTitle: 'App installeren op iOS',
+    installIosStep1: "Tik op het deel-icoon onderin Safari",
+    installIosStep2: "Kies 'Zet op beginscherm'",
   },
   settings: {
     detectionSensitivity: 'Detectiegevoeligheid',

@@ -239,11 +239,11 @@ export function TextInput({ value, onChange, onClear, entities, onAddEntity, onR
     >
       {/* Header bar */}
       <div className="flex items-center justify-between h-11 relative border-b border-[#C8C5BC] px-4 bg-[#F4F3EE]">
-        <h3 className="font-serif text-sm text-[#111111] font-medium">
+        <h3 className="font-serif text-sm text-[#242424] font-medium">
           {t.textInput.title}
         </h3>
         {value && (
-          <Button variant="ghost" size="sm" onClick={fileName ? onRemoveFile : onClear} className="gap-1.5 h-7 text-[#525252] hover:bg-[#E5E5E0] hover:text-[#111111]">
+          <Button variant="ghost" size="sm" onClick={fileName ? onRemoveFile : onClear} className="gap-1.5 h-7 text-[#616161] hover:bg-[#E1DFDD] hover:text-[#242424]">
             <X className="w-3 h-3" />
             {t.textInput.clear}
           </Button>
@@ -261,11 +261,11 @@ export function TextInput({ value, onChange, onClear, entities, onAddEntity, onR
       <div className="min-h-[200px] relative flex-1">
         {/* Drag overlay */}
         {isDragging && (
-          <div className="absolute inset-0 z-20 bg-[#F9F9F7]/95 border border-dashed border-[#525252] flex flex-col items-center justify-center gap-3 pointer-events-none">
-            <div className="w-12 h-12 border border-[#525252] flex items-center justify-center">
-              <Upload className="w-6 h-6 text-[#111111]" />
+          <div className="absolute inset-0 z-20 bg-[#FFFFFF]/95 border border-dashed border-[#616161] flex flex-col items-center justify-center gap-3 pointer-events-none">
+            <div className="w-12 h-12 border border-[#616161] flex items-center justify-center">
+              <Upload className="w-6 h-6 text-[#242424]" />
             </div>
-            <p className="text-sm font-medium text-[#111111]">{t.textInput.dragging}</p>
+            <p className="text-sm font-medium text-[#242424]">{t.textInput.dragging}</p>
           </div>
         )}
 
@@ -298,7 +298,7 @@ export function TextInput({ value, onChange, onClear, entities, onAddEntity, onR
                     key={i}
                     data-start={span.start}
                     data-end={span.end}
-                    className="entity-highlight-animate focus:outline focus:outline-2 focus:outline-[#111111]"
+                    className="entity-highlight-animate focus:outline focus:outline-2 focus:outline-[#0078D4]"
                     role="button"
                     tabIndex={0}
                     aria-label={`${t.textInput.removeRedaction}: ${span.text}`}
@@ -315,9 +315,9 @@ export function TextInput({ value, onChange, onClear, entities, onAddEntity, onR
                     title={t.textInput.removeRedaction}
                     style={{
                       // Ink block = "this will be censored"; the colored base keeps the type legible.
-                      backgroundColor: '#111111',
+                      backgroundColor: '#242424',
                       borderBottom: `3px solid ${ENTITY_COLORS[span.entity.type]}`,
-                      color: '#F9F9F7',
+                      color: '#FFFFFF',
                       padding: '1px 4px',
                       cursor: 'pointer',
                     }}
@@ -337,21 +337,21 @@ export function TextInput({ value, onChange, onClear, entities, onAddEntity, onR
           /* Loaded file (document or OCR'd image) - read-only text preview */
           <div className="p-4 text-sm leading-relaxed whitespace-pre-wrap break-words text-foreground overflow-auto max-h-[60vh]">
             {/* File loaded banner */}
-            <div className="flex items-center gap-3 mb-4 px-3 py-2.5 bg-[#111111]/5 border border-[#E5E5E0]">
-              <div className="w-8 h-8 bg-[#111111] flex items-center justify-center flex-shrink-0">
+            <div className="flex items-center gap-3 mb-4 px-3 py-2.5 bg-[#0078D4]/5 border border-[#E1DFDD]">
+              <div className="w-8 h-8 bg-[#0078D4] flex items-center justify-center flex-shrink-0">
                 {isImage
-                  ? <ImageIcon className="w-4 h-4 text-[#F9F9F7]" />
-                  : <FileText className="w-4 h-4 text-[#F9F9F7]" />}
+                  ? <ImageIcon className="w-4 h-4 text-[#FFFFFF]" />
+                  : <FileText className="w-4 h-4 text-[#FFFFFF]" />}
               </div>
               <div className="min-w-0 flex-1">
-                <p className="text-xs font-medium text-[#111111] truncate">{fileName}</p>
+                <p className="text-xs font-medium text-[#242424] truncate">{fileName}</p>
                 <p className="text-[10px] text-muted-foreground">
                   {isImage ? `${t.textInput.ocrExtracted} · ` : ''}{t.textInput.wordCount(wordCount)}
                 </p>
               </div>
               <button
                 onClick={onRemoveFile}
-                className="text-muted-foreground hover:text-[#CC0000] transition-colors cursor-pointer flex-shrink-0"
+                className="text-muted-foreground hover:text-[#D13438] transition-colors cursor-pointer flex-shrink-0"
                 title={t.textInput.removeFile}
               >
                 <X className="w-4 h-4" />
@@ -368,27 +368,27 @@ export function TextInput({ value, onChange, onClear, entities, onAddEntity, onR
               onChange={(e) => onChange(e.target.value)}
               onPaste={handlePaste}
               placeholder={t.textInput.placeholder}
-              className={`w-full bg-transparent p-4 text-[#111111] placeholder:text-[#707070] resize-none focus:outline-none text-sm leading-relaxed ${showEmptyState ? 'min-h-[140px]' : 'min-h-[200px]'}`}
+              className={`w-full bg-transparent p-4 text-[#242424] placeholder:text-[#707070] resize-none focus:outline-none text-sm leading-relaxed ${showEmptyState ? 'min-h-[140px]' : 'min-h-[200px]'}`}
               style={{ fieldSizing: 'content' } as React.CSSProperties}
             />
             {/* Upload section - only visible when empty */}
             {showEmptyState && onLoadFile && (
               <>
                 <div className="flex items-center gap-3 px-4">
-                  <div className="flex-1 border-t border-[#E5E5E0]" />
+                  <div className="flex-1 border-t border-[#E1DFDD]" />
                   <span className="text-[10px] text-muted-foreground/60 uppercase tracking-widest font-medium">{t.textInput.dropzoneOr}</span>
-                  <div className="flex-1 border-t border-[#E5E5E0]" />
+                  <div className="flex-1 border-t border-[#E1DFDD]" />
                 </div>
                 <div className="px-4 py-3">
                   <button
                     onClick={() => fileInputRef.current?.click()}
-                    className="w-full flex items-center gap-4 p-4 border border-dashed border-[#E5E5E0] hover:border-[#111111]/40 transition-all cursor-pointer group"
+                    className="w-full flex items-center gap-4 p-4 border border-dashed border-[#E1DFDD] hover:border-[#D1D1D1]/40 transition-all cursor-pointer group"
                   >
-                    <div className="w-10 h-10 bg-[#111111]/5 group-hover:bg-[#111111] flex items-center justify-center flex-shrink-0 transition-colors">
-                      <FileText className="w-5 h-5 text-muted-foreground group-hover:text-[#F9F9F7] transition-colors" />
+                    <div className="w-10 h-10 bg-[#0078D4]/5 group-hover:bg-[#0078D4] flex items-center justify-center flex-shrink-0 transition-colors">
+                      <FileText className="w-5 h-5 text-muted-foreground group-hover:text-[#FFFFFF] transition-colors" />
                     </div>
                     <div className="text-left">
-                      <p className="text-xs font-medium text-[#111111]">
+                      <p className="text-xs font-medium text-[#242424]">
                         {t.textInput.uploadDocx}
                       </p>
                       <p className="text-[10px] text-muted-foreground mt-0.5">
@@ -397,7 +397,7 @@ export function TextInput({ value, onChange, onClear, entities, onAddEntity, onR
                     </div>
                   </button>
                   {fileError && (
-                    <p className="mt-2 text-xs text-[#CC0000]" role="alert">{fileError}</p>
+                    <p className="mt-2 text-xs text-[#D13438]" role="alert">{fileError}</p>
                   )}
                 </div>
               </>
@@ -407,13 +407,13 @@ export function TextInput({ value, onChange, onClear, entities, onAddEntity, onR
       </div>
 
       {/* Footer bar */}
-      <div className="border-t border-[#E5E5E0] px-4 py-2 bg-[#F5F5F3] flex items-center justify-between">
+      <div className="border-t border-[#E1DFDD] px-4 py-2 bg-[#F5F5F3] flex items-center justify-between">
         <p className="label-meta text-muted-foreground">
           {value ? t.textInput.wordCount(wordCount) : '\u00A0'}
         </p>
         <div className="flex items-center gap-3">
           {value && !hasEntities && (
-            <p className="label-meta text-[#2D6A4F]/70">{t.textInput.readyToRedact}</p>
+            <p className="label-meta text-[#107C10]/70">{t.textInput.readyToRedact}</p>
           )}
           {hasEntities && (
             <p className="label-meta text-muted-foreground/60">{t.textInput.selectToTag}</p>

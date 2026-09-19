@@ -109,7 +109,7 @@ export function RotatingWord({
         className={`relative inline-block align-baseline max-w-full ${className}`}
         style={{ fontSize }}
       >
-        <span aria-hidden="true" className="absolute inset-x-0 top-[0.05em] bottom-0 bg-[#111111]" />
+        <span aria-hidden="true" className="absolute inset-x-0 top-[0.05em] bottom-0 bg-[#0078D4]" />
         <span
           ref={(el) => {
             wordRefs.current[0] = el;
@@ -134,7 +134,7 @@ export function RotatingWord({
           instead of covering the full line box, which would crowd the line
           above. Words render in the positioned clip layer after it, so they
           paint on top. */}
-      <span aria-hidden="true" className="absolute inset-x-0 top-[0.05em] bottom-0 bg-[#111111]" />
+      <span aria-hidden="true" className="absolute inset-x-0 top-[0.05em] bottom-0 bg-[#0078D4]" />
       <span className="sr-only">{words[0]}</span>
       <span
         aria-hidden="true"

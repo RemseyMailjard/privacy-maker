@@ -77,9 +77,9 @@ export function TextOutput({ value, entries, loading, onDownloadCertificate }: T
           className="entity-highlight-animate"
           style={{
             // Same ink-block language as the input marks; type color stays as the base.
-            backgroundColor: '#111111',
+            backgroundColor: '#242424',
             borderBottom: `3px solid ${seg.color}`,
-            color: '#F9F9F7',
+            color: '#FFFFFF',
             padding: '1px 4px',
             fontWeight: 500,
             // Stamped in sequence; the stagger caps so long documents finish fast.
@@ -98,18 +98,18 @@ export function TextOutput({ value, entries, loading, onDownloadCertificate }: T
   return (
     <div className="flex flex-col h-full">
       <div className="flex items-center justify-between h-11 relative border-b border-[#C8C5BC] px-4 bg-[#F4F3EE]">
-        <h3 className="font-serif text-sm text-[#111111] font-medium">
+        <h3 className="font-serif text-sm text-[#242424] font-medium">
           {t.textOutput.title}
         </h3>
         {value && (
           <div className="flex items-center gap-1">
             {onDownloadCertificate && (
-              <Button variant="ghost" size="sm" onClick={onDownloadCertificate} className="gap-1.5 h-7 text-[#525252] hover:bg-[#E5E5E0] hover:text-[#111111]">
+              <Button variant="ghost" size="sm" onClick={onDownloadCertificate} className="gap-1.5 h-7 text-[#616161] hover:bg-[#E1DFDD] hover:text-[#242424]">
                 <FileCheck className="w-3 h-3" />
                 {t.textOutput.downloadCertificate}
               </Button>
             )}
-            <Button variant="ghost" size="sm" onClick={handleCopy} className="gap-1.5 h-7 text-[#525252] hover:bg-[#E5E5E0] hover:text-[#111111]">
+            <Button variant="ghost" size="sm" onClick={handleCopy} className="gap-1.5 h-7 text-[#616161] hover:bg-[#E1DFDD] hover:text-[#242424]">
               {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
               {copied ? t.textOutput.copied : t.textOutput.copy}
             </Button>
@@ -130,8 +130,8 @@ export function TextOutput({ value, entries, loading, onDownloadCertificate }: T
           <div key={value} className="animate-content-reveal">
             {renderHighlighted()}
             {/* Post-redaction hint */}
-            <div className="mt-6 pt-4 border-t border-[#E5E5E0]">
-              <p className="text-[10px] text-[#2D6A4F]/70 flex items-center gap-1.5">
+            <div className="mt-6 pt-4 border-t border-[#E1DFDD]">
+              <p className="text-[10px] text-[#107C10]/70 flex items-center gap-1.5">
                 <Shield className="w-3 h-3" />
                 {t.textOutput.nextStepHint}
               </p>
@@ -141,14 +141,14 @@ export function TextOutput({ value, entries, loading, onDownloadCertificate }: T
           /* Empty state: numbered guide */
           <div className="flex flex-col items-center justify-center h-full min-h-[160px] text-center px-4">
             <div className="w-10 h-10 bg-[#F4F3EE] border border-[#C8C5BC] flex items-center justify-center mb-4">
-              <Shield className="w-5 h-5 text-[#525252]" />
+              <Shield className="w-5 h-5 text-[#616161]" />
             </div>
-            <p className="text-sm text-[#111111] font-medium mb-4 font-serif">{t.textOutput.emptyStateHint}</p>
+            <p className="text-sm text-[#242424] font-medium mb-4 font-serif">{t.textOutput.emptyStateHint}</p>
             <div className="space-y-2 text-left w-full max-w-[220px]">
               {[t.textOutput.emptyStateStep1, t.textOutput.emptyStateStep2, t.textOutput.emptyStateStep3].map((step, i) => (
                 <div key={i} className="flex items-start gap-2.5">
-                  <span className="w-4 h-4 bg-[#111111] text-[#F9F9F7] flex items-center justify-center flex-shrink-0 text-[9px] font-bold mt-0.5">{i + 1}</span>
-                  <p className="text-xs text-[#525252] leading-relaxed">{step}</p>
+                  <span className="w-4 h-4 bg-[#0078D4] text-[#FFFFFF] flex items-center justify-center flex-shrink-0 text-[9px] font-bold mt-0.5">{i + 1}</span>
+                  <p className="text-xs text-[#616161] leading-relaxed">{step}</p>
                 </div>
               ))}
             </div>
@@ -156,7 +156,7 @@ export function TextOutput({ value, entries, loading, onDownloadCertificate }: T
           </div>
         )}
       </div>
-      <div className="mt-auto border-t border-[#E5E5E0] px-4 py-2 bg-[#F5F5F3]">
+      <div className="mt-auto border-t border-[#E1DFDD] px-4 py-2 bg-[#F5F5F3]">
         <p className="label-meta text-muted-foreground">
           {value && entries.length > 0 ? t.entityTable.title(entries.length) : ' '}
         </p>

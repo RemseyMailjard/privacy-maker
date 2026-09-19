@@ -33,10 +33,10 @@ export function DeAnonymize({ onDeanonymize, hasMapping }: DeAnonymizeProps) {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-0 border-2 border-[#111111]">
-      <div className="flex flex-col border-r-2 border-[#111111]">
-        <div className="flex items-center justify-center h-11 bg-[#111111] px-3">
-          <label className="label-meta text-[#F9F9F7] tracking-[0.15em]">{t.deAnonymize.pasteLabel}</label>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-0 border-2 border-[#D1D1D1]">
+      <div className="flex flex-col border-r-2 border-[#D1D1D1]">
+        <div className="flex items-center justify-center h-11 bg-[#0078D4] px-3">
+          <label className="label-meta text-[#FFFFFF] tracking-[0.15em]">{t.deAnonymize.pasteLabel}</label>
         </div>
         <div className="min-h-[200px]">
           <textarea
@@ -47,7 +47,7 @@ export function DeAnonymize({ onDeanonymize, hasMapping }: DeAnonymizeProps) {
             style={{ fieldSizing: 'content' } as React.CSSProperties}
           />
         </div>
-        <div className="border-t border-[#E5E5E0] px-4 py-2 bg-[#F5F5F3]">
+        <div className="border-t border-[#E1DFDD] px-4 py-2 bg-[#F5F5F3]">
           <Button
             onClick={handleDeanonymize}
             disabled={!aiResponse.trim()}
@@ -60,10 +60,10 @@ export function DeAnonymize({ onDeanonymize, hasMapping }: DeAnonymizeProps) {
         </div>
       </div>
       <div className="flex flex-col">
-        <div className="flex items-center justify-center h-11 relative bg-[#111111] px-3">
-          <label className="label-meta text-[#F9F9F7] tracking-[0.15em]">{t.deAnonymize.restoredLabel}</label>
+        <div className="flex items-center justify-center h-11 relative bg-[#0078D4] px-3">
+          <label className="label-meta text-[#FFFFFF] tracking-[0.15em]">{t.deAnonymize.restoredLabel}</label>
           {result && (
-            <Button variant="ghost" size="sm" onClick={handleCopy} className="gap-1.5 h-7 absolute right-2 text-[#F9F9F7] hover:bg-[#F9F9F7]/10 hover:text-[#F9F9F7]">
+            <Button variant="ghost" size="sm" onClick={handleCopy} className="gap-1.5 h-7 absolute right-2 text-[#FFFFFF] hover:bg-[#FFFFFF]/10 hover:text-[#FFFFFF]">
               {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
               {copied ? t.deAnonymize.copied : t.deAnonymize.copy}
             </Button>
@@ -81,7 +81,7 @@ export function DeAnonymize({ onDeanonymize, hasMapping }: DeAnonymizeProps) {
             </span>
           )}
         </div>
-        <div className="mt-auto border-t border-[#E5E5E0] px-4 py-2 bg-[#F5F5F3]">
+        <div className="mt-auto border-t border-[#E1DFDD] px-4 py-2 bg-[#F5F5F3]">
           <p className="label-meta text-muted-foreground">&nbsp;</p>
         </div>
       </div>

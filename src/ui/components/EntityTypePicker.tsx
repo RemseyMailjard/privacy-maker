@@ -46,10 +46,10 @@ export function EntityTypePicker({ word, x, y, onSelect, onClose }: EntityTypePi
       <Card
         role="dialog"
         aria-label={`${t.entityTable.markAs}: ${word}`}
-        className="fixed z-[61] py-1 w-52 shadow-[4px_4px_0px_0px_#111111] max-h-[70vh] overflow-auto animate-picker-in"
+        className="fixed z-[61] py-1 w-52 shadow-[4px_4px_0px_0px_#242424] max-h-[70vh] overflow-auto animate-picker-in"
         style={{ left, top, transformOrigin: fitsBelow ? 'top left' : 'bottom left' }}
       >
-        <div className="px-3 py-2.5 border-b border-[#E5E5E0]">
+        <div className="px-3 py-2.5 border-b border-[#E1DFDD]">
           <p className="label-meta text-muted-foreground">{t.entityTable.markAs}</p>
           <p className="text-sm font-medium text-foreground truncate mt-0.5">{word}</p>
         </div>
@@ -58,7 +58,7 @@ export function EntityTypePicker({ word, x, y, onSelect, onClose }: EntityTypePi
             key={type}
             ref={i === 0 ? firstOptionRef : undefined}
             onClick={() => onSelect(type)}
-            className="w-full text-left px-3 py-2 text-sm hover:bg-[#E5E5E0] focus:bg-[#E5E5E0] focus:outline-none transition-colors flex items-center gap-2.5 cursor-pointer"
+            className="w-full text-left px-3 py-2 text-sm hover:bg-[#E1DFDD] focus:bg-[#E1DFDD] focus:outline-none transition-colors flex items-center gap-2.5 cursor-pointer"
           >
             <div
               className="w-2 h-2 shrink-0"
@@ -67,12 +67,12 @@ export function EntityTypePicker({ word, x, y, onSelect, onClose }: EntityTypePi
             <span className="text-foreground/80">{t.entityLabels[type]}</span>
           </button>
         ))}
-        <div className="border-t border-[#E5E5E0] my-1" />
+        <div className="border-t border-[#E1DFDD] my-1" />
         {OTHER_TYPES.map((type) => (
           <button
             key={type}
             onClick={() => onSelect(type)}
-            className="w-full text-left px-3 py-2 text-sm hover:bg-[#E5E5E0] focus:bg-[#E5E5E0] focus:outline-none transition-colors flex items-center gap-2.5 cursor-pointer"
+            className="w-full text-left px-3 py-2 text-sm hover:bg-[#E1DFDD] focus:bg-[#E1DFDD] focus:outline-none transition-colors flex items-center gap-2.5 cursor-pointer"
           >
             <div
               className="w-2 h-2 shrink-0"

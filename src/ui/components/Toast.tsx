@@ -54,7 +54,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
         {toasts.map((toast) => (
           <div
             key={toast.id}
-            className={`pointer-events-auto flex items-center gap-3 bg-[#111111] text-[#F9F9F7] px-4 py-3 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] animate-toast-in transition-[opacity,transform] duration-200 ease-out ${
+            className={`pointer-events-auto flex items-center gap-3 bg-[#0078D4] text-[#FFFFFF] px-4 py-3 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] animate-toast-in transition-[opacity,transform] duration-200 ease-out ${
               toast.exiting ? 'opacity-0 translate-y-3' : ''
             }`}
           >
@@ -72,7 +72,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
             )}
             <button
               onClick={() => dismiss(toast.id)}
-              className="text-[#F9F9F7]/50 hover:text-[#F9F9F7] transition-colors cursor-pointer ml-1"
+              className="text-[#FFFFFF]/50 hover:text-[#FFFFFF] transition-colors cursor-pointer ml-1"
               aria-label="Dismiss"
             >
               <X className="w-3 h-3" />

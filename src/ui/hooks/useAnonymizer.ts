@@ -1,31 +1,23 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
-import type { DetectedEntity, EntityType, ReplacementEntry } from '@doccloak/core';
-import { detectEntities, preloadModel, onDownloadProgress, setDetectionThreshold, getDetectionThreshold, getCustomLabels, setCustomLabels, switchProvider as engineSwitchProvider, getActiveProviderId, isRegexEnabled, setRegexEnabled, getRegexRegion, setRegexRegionSetting } from '../../engine.ts';
+import { useState, useCallback, useReducer, useEffect } from 'react';
+import type { EntityType, ReplacementMode } from '@doccloak/core';
+import { preloadModel, onDownloadProgress, setDetectionThreshold, getDetectionThreshold, getCustomLabels, setCustomLabels, switchProvider as engineSwitchProvider, getActiveProviderId, isRegexEnabled, setRegexEnabled, getRegexRegion, setRegexRegionSetting } from '../../engine.ts';
 import type { RegexRegionId } from '@doccloak/core';
 import type { ProviderId } from '@doccloak/core';
 import { AnonymizationSession } from '@doccloak/core';
-import type { ReplacementMode } from '@doccloak/core';
-import { readDocx, writeAnonymizedDocx, isLegacyDoc, isSupportedFile } from '@doccloak/core/dom';
-import { readDocText, writeAnonymizedDoc } from '@doccloak/core';
-import { isImageFile, renderRedactedImage } from '@doccloak/core/dom';
-import { loadImageToCanvas, recognizeCanvas } from '../../ocr.web.ts';
-import type { OcrWord } from '@doccloak/core/dom';
-import { isPdfFile, extractPdfText, renderRedactedPdf } from '../../pdf.web.ts';
 import { useTranslation } from '../../i18n/LanguageContext.tsx';
-import { loadDictionary, saveDictionary, mergeDictionaryEntities } from '../dictionary.ts';
+import { loadDictionary, saveDictionary } from '../dictionary.ts';
 import type { DictionaryEntry } from '../dictionary.ts';
-import { mergeKvkEntities } from '../nlRules.ts';
-import { mergeRelationalEntities } from '../relationalRules.ts';
-
-type PdfWord = OcrWord & { pageIndex: number };
+import { AnonymizerSessionCore } from '../core/anonymizerSession.ts';
 
 export function useAnonymizer() {
   const { language } = useTranslation();
-  const [inputText, setInputText] = useState('');
-  const [anonymizedText, setAnonymizedText] = useState('');
-  const [entities, setEntities] = useState<DetectedEntity[]>([]);
-  const [entries, setEntries] = useState<ReplacementEntry[]>([]);
-  const [excludedIndices, setExcludedIndices] = useState<Set<number>>(new Set());
+  // AnonymizerSessionCore holds document-scoped state as plain fields
+  // (instead of useState) so it can also be instantiated N times for batch
+  // processing, where hooks-in-a-loop isn't possible. `forceRender` re-renders
+  // this component whenever the core notifies a change.
+  const [, forceRender] = useReducer((n: number) => n + 1, 0);
+  const [core] = useState(() => new AnonymizerSessionCore(new AnonymizationSession(), { onChange: forceRender }));
+
   const [modelLoaded, setModelLoaded] = useState(false);
   const [modelLoading, setModelLoading] = useState(false);
   // First-visit gate: the ~46 MB model download starts only after the user accepts.
@@ -34,10 +26,7 @@ export function useAnonymizer() {
     () => localStorage.getItem('doccloak-model-consented') === '1',
   );
   const [modelError, setModelError] = useState(false);
-  const [anonymizing, setAnonymizing] = useState(false);
-  const [detectionProgress, setDetectionProgress] = useState<number | null>(null);
   const [downloadProgress, setDownloadProgress] = useState<{ downloaded: number; total: number } | null>(null);
-  const [detectionError, setDetectionError] = useState<string | null>(null);
   const [threshold, setThreshold] = useState(getDetectionThreshold());
   const [replacementMode, setReplacementModeState] = useState<ReplacementMode>('labeled');
   const [customLabels, setCustomLabelsState] = useState<string[]>(getCustomLabels());
@@ -45,18 +34,6 @@ export function useAnonymizer() {
   const [regexRules, setRegexRulesState] = useState(isRegexEnabled());
   const [regexRegion, setRegexRegionState] = useState<RegexRegionId>(getRegexRegion());
   const [dictionary, setDictionaryState] = useState<DictionaryEntry[]>(loadDictionary);
-  const [docxFile, setDocxFile] = useState<File | null>(null);
-  const [docxFileName, setDocxFileName] = useState<string | null>(null);
-  const [imageFileName, setImageFileName] = useState<string | null>(null);
-  const [ocrProgress, setOcrProgress] = useState<number | null>(null);
-  const [pdfFile, setPdfFile] = useState<File | null>(null);
-  const [pdfFileName, setPdfFileName] = useState<string | null>(null);
-  const [pdfLoading, setPdfLoading] = useState(false);
-  const imageCanvasRef = useRef<HTMLCanvasElement | null>(null);
-  const ocrWordsRef = useRef<OcrWord[]>([]);
-  const pdfWordsRef = useRef<PdfWord[]>([]);
-  const sessionRef = useRef(new AnonymizationSession());
-  const latestRequestRef = useRef(0);
 
   // Load (or retry loading) the detection model with progress tracking
   const startModelLoad = useCallback(() => {
@@ -94,150 +71,29 @@ export function useAnonymizer() {
     setModelConsented(true);
   }, []);
 
-  const rebuildAnonymization = useCallback(
-    (text: string, allEntities: DetectedEntity[], excluded: Set<number>) => {
-      sessionRef.current.clear();
-      const activeEntities = allEntities.filter((_, i) => !excluded.has(i));
-      const result = sessionRef.current.anonymizeText(text, activeEntities);
-      setAnonymizedText(result);
-      setEntries(sessionRef.current.getEntries());
-    },
-    []
-  );
-
-  const anonymize = useCallback(() => {
-    const text = inputText;
-    if (!text.trim()) return;
-
-    setAnonymizing(true);
-    setDetectionError(null);
-    setDetectionProgress(0);
-    const requestId = ++latestRequestRef.current;
-    const excluded = new Set<number>();
-    setExcludedIndices(excluded);
-
-    // Detection runs in a Web Worker - no need to yield to the browser
-    detectEntities(text, (progress) => {
-      if (requestId === latestRequestRef.current) {
-        setDetectionProgress(progress);
-      }
-    })
-      .then((results) => {
-        if (requestId === latestRequestRef.current) {
-          // Dictionary words are always redacted; detected entities win overlaps
-          const withDictionary = mergeDictionaryEntities(text, results, dictionary);
-          // KvK-nummers (Dutch Chamber of Commerce numbers) are flagged when
-          // introduced by a recognizable label; detected entities still win overlaps
-          const withKvk = mergeKvkEntities(text, withDictionary);
-          // Dutch relational/role references ("zijn buurvrouw", "de opa van
-          // Marieke") indirectly identify a person; detected entities and
-          // KvK hits still win overlaps.
-          const withRelational = mergeRelationalEntities(text, withKvk);
-          setEntities(withRelational);
-          rebuildAnonymization(text, withRelational, excluded);
-          setAnonymizing(false);
-          setDetectionProgress(null);
-          // Scroll the tool back into view in case the page has drifted.
-          // We target <main> which wraps the tool; falls back to no-op if not found.
-          const toolEl = document.querySelector('main');
-          if (toolEl) {
-            toolEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
-        }
-      })
-      .catch((err) => {
-        console.error('[Privacy Maker] Detection failed:', err);
-        if (requestId === latestRequestRef.current) {
-          setAnonymizing(false);
-          setDetectionProgress(null);
-          setDetectionError(err instanceof Error ? err.message : String(err));
-        }
-      });
-  }, [inputText, dictionary, rebuildAnonymization]);
-
   const handleDictionaryChange = useCallback((entries: DictionaryEntry[]) => {
     saveDictionary(entries);
     setDictionaryState(entries);
   }, []);
 
-  const handleInputChange = useCallback((text: string) => {
-    setInputText(text);
-    setAnonymizedText('');
-    setEntities([]);
-    setEntries([]);
-    setExcludedIndices(new Set());
-  }, []);
+  const handleInputChange = useCallback((text: string) => core.handleInputChange(text), [core]);
+
+  const anonymize = useCallback(() => {
+    void core.anonymize(dictionary);
+  }, [core, dictionary]);
 
   const addManualEntity = useCallback(
-    (start: number, end: number, type: EntityType) => {
-      const value = inputText.slice(start, end);
-      const newEntity: DetectedEntity = {
-        type,
-        value,
-        start,
-        end,
-        confidence: 1.0,
-        detector: 'manual',
-      };
-      setEntities((prev) => {
-        const next = [...prev, newEntity].sort((a, b) => a.start - b.start);
-        setExcludedIndices((excl) => {
-          rebuildAnonymization(inputText, next, excl);
-          return excl;
-        });
-        return next;
-      });
-    },
-    [inputText, rebuildAnonymization]
+    (start: number, end: number, type: EntityType) => core.addManualEntity(start, end, type),
+    [core]
   );
 
-  const removeEntity = useCallback(
-    (index: number) => {
-      setEntities((prev) => {
-        const next = prev.filter((_, i) => i !== index);
-        setExcludedIndices((excl) => {
-          // Rebuild excluded indices: shift down indices above the removed one
-          const newExcl = new Set<number>();
-          for (const i of excl) {
-            if (i < index) newExcl.add(i);
-            else if (i > index) newExcl.add(i - 1);
-          }
-          rebuildAnonymization(inputText, next, newExcl);
-          return newExcl;
-        });
-        return next;
-      });
-    },
-    [inputText, rebuildAnonymization]
-  );
+  const removeEntity = useCallback((index: number) => core.removeEntity(index), [core]);
 
-  const toggleEntity = useCallback(
-    (index: number) => {
-      setExcludedIndices((prev) => {
-        const next = new Set(prev);
-        if (next.has(index)) {
-          next.delete(index);
-        } else {
-          next.add(index);
-        }
-        rebuildAnonymization(inputText, entities, next);
-        return next;
-      });
-    },
-    [inputText, entities, rebuildAnonymization]
-  );
+  const toggleEntity = useCallback((index: number) => core.toggleEntity(index), [core]);
 
-  const deanonymize = useCallback((aiResponse: string): string => {
-    return sessionRef.current.deanonymize(aiResponse);
-  }, []);
+  const deanonymize = useCallback((aiResponse: string): string => core.deanonymize(aiResponse), [core]);
 
-  const renameLabel = useCallback((original: string, newLabel: string) => {
-    const oldLabel = sessionRef.current.getForward(original);
-    if (!oldLabel) return;
-    sessionRef.current.renameLabel(original, newLabel);
-    setAnonymizedText((prev) => prev.replaceAll(oldLabel, () => newLabel));
-    setEntries(sessionRef.current.getEntries());
-  }, []);
+  const renameLabel = useCallback((original: string, newLabel: string) => core.renameLabel(original, newLabel), [core]);
 
   const handleThresholdChange = useCallback((value: number) => {
     setThreshold(value);
@@ -285,235 +141,44 @@ export function useAnonymizer() {
 
   const handleReplacementModeChange = useCallback((mode: ReplacementMode) => {
     setReplacementModeState(mode);
-    sessionRef.current.setMode(mode);
-    if (entities.length > 0) {
-      rebuildAnonymization(inputText, entities, excludedIndices);
-    }
-  }, [entities, inputText, excludedIndices, rebuildAnonymization]);
+    core.setReplacementMode(mode);
+  }, [core]);
 
-  const resetImageState = useCallback(() => {
-    setImageFileName(null);
-    imageCanvasRef.current = null;
-    ocrWordsRef.current = [];
-  }, []);
+  const loadFile = useCallback((file: File) => core.loadFile(file, language), [core, language]);
 
-  const resetPdfState = useCallback(() => {
-    setPdfFile(null);
-    setPdfFileName(null);
-    pdfWordsRef.current = [];
-  }, []);
+  const exportDocx = useCallback(() => core.exportDocx(), [core]);
+  const exportRedactedImage = useCallback(() => core.exportRedactedImage(), [core]);
+  const exportRedactedPdf = useCallback(() => core.exportRedactedPdf(), [core]);
 
-  const loadDocxFile = useCallback(async (file: File): Promise<{ success: boolean; error?: string }> => {
-    if (!isSupportedFile(file.name)) {
-      return { success: false, error: 'unsupported' };
-    }
-    try {
-      let plainText: string;
+  const removeFile = useCallback(() => core.removeFile(), [core]);
 
-      if (isLegacyDoc(file.name)) {
-        // Legacy .doc: try as .docx first (some .doc files are renamed .docx)
-        try {
-          const extraction = await readDocx(file);
-          plainText = extraction.plainText;
-        } catch {
-          // Not a .docx in disguise - parse as real .doc binary
-          const buffer = await file.arrayBuffer();
-          plainText = readDocText(buffer);
-        }
-      } else {
-        // Standard .docx
-        const extraction = await readDocx(file);
-        plainText = extraction.plainText;
-      }
-
-      resetImageState();
-      resetPdfState();
-      setDocxFile(file);
-      setDocxFileName(file.name);
-      setInputText(plainText);
-      setAnonymizedText('');
-      setEntities([]);
-      setEntries([]);
-      setExcludedIndices(new Set());
-      sessionRef.current.clear();
-      return { success: true };
-    } catch (err) {
-      console.error('[Privacy Maker] Failed to read file:', err);
-      return { success: false, error: err instanceof Error ? err.message : String(err) };
-    }
-  }, [resetImageState, resetPdfState]);
-
-  const loadImageFile = useCallback(async (file: File): Promise<{ success: boolean; error?: string }> => {
-    try {
-      setOcrProgress(0);
-      const canvas = await loadImageToCanvas(file);
-      const { text, words } = await recognizeCanvas(canvas, language, (p) => setOcrProgress(p));
-      if (!text.trim()) {
-        return { success: false, error: 'no-text' };
-      }
-
-      imageCanvasRef.current = canvas;
-      ocrWordsRef.current = words;
-      resetPdfState();
-      setImageFileName(file.name);
-      setDocxFile(null);
-      setDocxFileName(null);
-      setInputText(text);
-      setAnonymizedText('');
-      setEntities([]);
-      setEntries([]);
-      setExcludedIndices(new Set());
-      sessionRef.current.clear();
-      return { success: true };
-    } catch (err) {
-      console.error('[Privacy Maker] OCR failed:', err);
-      return { success: false, error: err instanceof Error ? err.message : String(err) };
-    } finally {
-      setOcrProgress(null);
-    }
-  }, [language, resetPdfState]);
-
-  const loadPdfFile = useCallback(async (file: File): Promise<{ success: boolean; error?: string }> => {
-    try {
-      setPdfLoading(true);
-      const { text, words } = await extractPdfText(file);
-      if (!text.trim()) {
-        return { success: false, error: 'no-text' };
-      }
-
-      pdfWordsRef.current = words;
-      resetImageState();
-      setPdfFile(file);
-      setPdfFileName(file.name);
-      setDocxFile(null);
-      setDocxFileName(null);
-      setInputText(text);
-      setAnonymizedText('');
-      setEntities([]);
-      setEntries([]);
-      setExcludedIndices(new Set());
-      sessionRef.current.clear();
-      return { success: true };
-    } catch (err) {
-      console.error('[Privacy Maker] PDF extraction failed:', err);
-      return { success: false, error: err instanceof Error ? err.message : String(err) };
-    } finally {
-      setPdfLoading(false);
-    }
-  }, [resetImageState]);
-
-  // Route uploads by type: images go through OCR, PDFs through pdf.js, other documents through the docx reader
-  const loadFile = useCallback(async (file: File): Promise<{ success: boolean; error?: string }> => {
-    if (isImageFile(file.name)) return loadImageFile(file);
-    if (isPdfFile(file.name)) return loadPdfFile(file);
-    return loadDocxFile(file);
-  }, [loadImageFile, loadPdfFile, loadDocxFile]);
-
-  const exportRedactedImage = useCallback(async (): Promise<Blob> => {
-    const canvas = imageCanvasRef.current;
-    if (!canvas || entities.length === 0) {
-      throw new Error('No image or entities to export');
-    }
-    const activeEntities = entities.filter((_, i) => !excludedIndices.has(i));
-    return renderRedactedImage(canvas, ocrWordsRef.current, activeEntities);
-  }, [entities, excludedIndices]);
-
-  const exportRedactedPdf = useCallback(async (): Promise<Blob> => {
-    if (!pdfFile || entities.length === 0) {
-      throw new Error('No PDF or entities to export');
-    }
-    const activeEntities = entities.filter((_, i) => !excludedIndices.has(i));
-    return renderRedactedPdf(pdfFile, pdfWordsRef.current, activeEntities);
-  }, [pdfFile, entities, excludedIndices]);
-
-  const exportDocx = useCallback(async (): Promise<Blob> => {
-    if (!docxFile || entities.length === 0) {
-      throw new Error('No document or entities to export');
-    }
-
-    const activeEntities = entities.filter((_, i) => !excludedIndices.has(i));
-    const replacements = activeEntities.map((entity) => {
-      const replacement = sessionRef.current.getForward(entity.value);
-      if (replacement === undefined) {
-        // Fail closed: never write an original value into a redacted export
-        throw new Error('Missing replacement mapping for a detected entity');
-      }
-      return { start: entity.start, end: entity.end, replacement };
-    });
-    // Value-level pairs let the writer scrub places offsets cannot reach
-    // (hyperlink targets, field instructions)
-    const valueReplacements = activeEntities.map((entity) => ({
-      value: entity.value,
-      replacement: sessionRef.current.getForward(entity.value) ?? '',
-    }));
-
-    if (isLegacyDoc(docxFile.name)) {
-      // Legacy .doc: try .docx first (renamed files), fall back to .doc binary export
-      try {
-        const extraction = await readDocx(docxFile);
-        return await writeAnonymizedDocx(extraction, replacements, valueReplacements);
-      } catch {
-        const buffer = await docxFile.arrayBuffer();
-        return await writeAnonymizedDoc(buffer, replacements);
-      }
-    } else {
-      // Standard .docx
-      const extraction = await readDocx(docxFile);
-      return await writeAnonymizedDocx(extraction, replacements, valueReplacements);
-    }
-  }, [docxFile, entities, excludedIndices]);
-
-  const removeFile = useCallback(() => {
-    setDocxFile(null);
-    setDocxFileName(null);
-    resetImageState();
-    resetPdfState();
-    setInputText('');
-    setAnonymizedText('');
-    setEntities([]);
-    setEntries([]);
-    setExcludedIndices(new Set());
-    sessionRef.current.clear();
-  }, [resetImageState, resetPdfState]);
-
-  const clear = useCallback(() => {
-    setInputText('');
-    setAnonymizedText('');
-    setEntities([]);
-    setEntries([]);
-    setExcludedIndices(new Set());
-    setDocxFile(null);
-    setDocxFileName(null);
-    resetImageState();
-    resetPdfState();
-    sessionRef.current.clear();
-  }, [resetImageState, resetPdfState]);
+  const clear = useCallback(() => core.clear(), [core]);
 
   return {
-    inputText,
-    anonymizedText,
-    entities,
-    entries,
-    excludedIndices,
+    inputText: core.inputText,
+    anonymizedText: core.anonymizedText,
+    entities: core.entities,
+    entries: core.entries,
+    excludedIndices: core.excludedIndices,
     modelLoaded,
     modelLoading,
     modelError,
-    anonymizing,
-    detectionProgress,
-    detectionError,
+    anonymizing: core.anonymizing,
+    detectionProgress: core.detectionProgress,
+    detectionError: core.detectionError,
     downloadProgress,
     threshold,
     replacementMode,
     customLabels,
-    docxFileName,
-    imageFileName,
-    pdfFileName,
-    fileName: docxFileName ?? imageFileName ?? pdfFileName,
-    hasDocxExtraction: docxFile !== null,
-    hasImage: imageFileName !== null,
-    hasPdf: pdfFile !== null,
-    ocrProgress,
-    pdfLoading,
+    docxFileName: core.docxFileName,
+    imageFileName: core.imageFileName,
+    pdfFileName: core.pdfFileName,
+    fileName: core.fileName,
+    hasDocxExtraction: core.hasDocxExtraction,
+    hasImage: core.hasImage,
+    hasPdf: core.hasPdf,
+    ocrProgress: core.ocrProgress,
+    pdfLoading: core.pdfLoading,
     handleInputChange,
     anonymize,
     addManualEntity,

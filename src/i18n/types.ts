@@ -179,6 +179,25 @@ export interface Translations {
     processingTitle: string;
     processingDescription: string;
   };
+  batch: {
+    modeSingle: string;
+    modeBatch: string;
+    dropzoneTitle: string;
+    dropzoneSubtitle: string;
+    addFiles: string;
+    processBatch: string;
+    processing: string;
+    clearBatch: string;
+    emptyState: string;
+    statusPending: string;
+    statusLoading: string;
+    statusDetecting: string;
+    statusDone: string;
+    statusError: string;
+    progressLabel: (current: number, total: number) => string;
+    downloadZip: string;
+    removeFile: string;
+  };
   landing: {
     hero: {
       titleBefore: string;

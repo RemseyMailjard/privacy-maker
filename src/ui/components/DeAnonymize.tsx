@@ -47,7 +47,7 @@ export function DeAnonymize({ onDeanonymize, hasMapping }: DeAnonymizeProps) {
             style={{ fieldSizing: 'content' } as React.CSSProperties}
           />
         </div>
-        <div className="border-t border-[#E1DFDD] px-4 py-2 bg-[#F5F5F3]">
+        <div className="border-t border-[#E1DFDD] px-4 py-2 bg-[#F3F2F1]">
           <Button
             onClick={handleDeanonymize}
             disabled={!aiResponse.trim()}
@@ -81,7 +81,7 @@ export function DeAnonymize({ onDeanonymize, hasMapping }: DeAnonymizeProps) {
             </span>
           )}
         </div>
-        <div className="mt-auto border-t border-[#E1DFDD] px-4 py-2 bg-[#F5F5F3]">
+        <div className="mt-auto border-t border-[#E1DFDD] px-4 py-2 bg-[#F3F2F1]">
           <p className="label-meta text-muted-foreground">&nbsp;</p>
         </div>
       </div>

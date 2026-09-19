@@ -34,7 +34,7 @@ export function DictionaryBar({ dictionary, onChange }: DictionaryBarProps) {
   };
 
   return (
-    <div className="border border-t-0 border-[#C8C5BC] bg-[#F4F3EE]">
+    <div className="border border-t-0 border-[#D1D1D1] bg-[#F3F2F1]">
       <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-8 px-4 py-3">
         <div className="shrink-0">
           <div className="flex items-center gap-2">
@@ -53,8 +53,7 @@ export function DictionaryBar({ dictionary, onChange }: DictionaryBarProps) {
             onKeyDown={(e) => { if (e.key === 'Enter') addWord(); }}
             placeholder={t.dictionary.placeholder}
             aria-label={t.dictionary.title}
-            className="relative flex-1 min-w-0 md:flex-initial md:w-52 text-xs px-3 py-2 border border-[#C8C5BC] bg-[#FFFFFF] text-[#242424] font-mono placeholder:text-[#6B6960] focus:outline-none focus:border-[#D1D1D1] focus:z-10"
-            style={{ borderRadius: 0 }}
+            className="relative flex-1 min-w-0 md:flex-initial md:w-52 text-xs px-3 py-2 rounded-l-md border border-[#D1D1D1] bg-[#FFFFFF] text-[#242424] font-mono placeholder:text-[#6B6960] focus:outline-none focus:border-[#0078D4] focus:z-10"
           />
           <button
             type="button"
@@ -65,7 +64,7 @@ export function DictionaryBar({ dictionary, onChange }: DictionaryBarProps) {
             className={`pressable -ml-px px-2.5 border text-[11px] font-mono cursor-pointer transition-colors ${
               caseSensitive
                 ? 'z-10 bg-[#0078D4] text-[#FFFFFF] border-[#D1D1D1]'
-                : 'bg-[#FFFFFF] text-[#616161] border-[#C8C5BC] hover:text-[#242424]'
+                : 'bg-[#FFFFFF] text-[#616161] border-[#D1D1D1] hover:text-[#242424]'
             }`}
           >
             Aa
@@ -73,7 +72,7 @@ export function DictionaryBar({ dictionary, onChange }: DictionaryBarProps) {
           <button
             onClick={addWord}
             disabled={!word.trim()}
-            className="pressable -ml-px text-xs px-3.5 py-2 bg-[#0078D4] text-[#FFFFFF] border border-[#D1D1D1] hover:bg-[#FFFFFF] hover:text-[#242424] transition-colors disabled:bg-[#E9E7E0] disabled:text-[#8A887F] disabled:border-[#C8C5BC] disabled:cursor-not-allowed cursor-pointer font-medium flex items-center gap-1.5 shrink-0"
+            className="pressable -ml-px text-xs px-3.5 py-2 rounded-r-md bg-[#0078D4] text-[#FFFFFF] border border-[#0078D4] hover:bg-[#106EBE] transition-colors disabled:bg-[#E1DFDD] disabled:text-[#8A887F] disabled:border-[#D1D1D1] disabled:cursor-not-allowed cursor-pointer font-medium flex items-center gap-1.5 shrink-0"
           >
             <Plus className="w-3 h-3" />
             {t.dictionary.add}
@@ -86,12 +85,12 @@ export function DictionaryBar({ dictionary, onChange }: DictionaryBarProps) {
           {dictionary.map((entry, index) => (
             <span
               key={`${entry.word}-${entry.caseSensitive}`}
-              className="inline-flex items-center gap-1.5 text-[11px] px-2 py-1 bg-[#0078D4] text-[#FFFFFF] font-mono"
+              className="inline-flex items-center gap-1.5 text-[11px] px-2.5 py-1 rounded-full bg-[#0078D4] text-[#FFFFFF] font-mono"
             >
               {entry.word}
               {entry.caseSensitive && (
                 <span
-                  className="text-[9px] px-1 py-px border border-[#FFFFFF]/40 text-[#FFFFFF]/80 leading-none"
+                  className="text-[9px] px-1 py-px rounded-sm border border-[#FFFFFF]/40 text-[#FFFFFF]/80 leading-none"
                   title={t.dictionary.matchesCase}
                   aria-label={t.dictionary.matchesCase}
                 >
@@ -100,7 +99,7 @@ export function DictionaryBar({ dictionary, onChange }: DictionaryBarProps) {
               )}
               <button
                 onClick={() => removeWord(index)}
-                className="text-[#FFFFFF]/60 hover:text-[#FF3333] transition-colors cursor-pointer"
+                className="text-[#FFFFFF]/60 hover:text-[#FFFFFF] transition-colors cursor-pointer"
                 aria-label={`${t.dictionary.removeWord}: ${entry.word}`}
               >
                 <X className="w-3 h-3" />

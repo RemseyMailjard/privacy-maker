@@ -97,7 +97,7 @@ export function Audience() {
     { icon: Users, title: a.hrTitle, body: a.hrBody },
   ];
   return (
-    <section className="bg-[#F4F3EE] px-6 py-20 border-y border-[#E1DFDD]">
+    <section className="bg-[#F3F2F1] px-6 py-20 border-y border-[#E1DFDD]">
       <div className="max-w-4xl mx-auto">
         <h2 className="text-center font-serif text-3xl md:text-4xl text-[#242424] mb-12 font-medium tracking-tight">
           {a.heading}
@@ -165,7 +165,7 @@ export function FAQ() {
   ];
   const [openIdx, setOpenIdx] = useState<number | null>(0);
   return (
-    <section className="bg-[#F4F3EE] px-6 py-20 border-t border-[#E1DFDD]">
+    <section className="bg-[#F3F2F1] px-6 py-20 border-t border-[#E1DFDD]">
       <div className="max-w-3xl mx-auto">
         <h2 className="text-center font-serif text-3xl md:text-4xl text-[#242424] mb-12 font-medium tracking-tight">
           {f.heading}

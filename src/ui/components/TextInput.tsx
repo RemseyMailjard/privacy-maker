@@ -238,7 +238,7 @@ export function TextInput({ value, onChange, onClear, entities, onAddEntity, onR
       onDrop={onLoadFile ? handleDrop : undefined}
     >
       {/* Header bar */}
-      <div className="flex items-center justify-between h-11 relative border-b border-[#C8C5BC] px-4 bg-[#F4F3EE]">
+      <div className="flex items-center justify-between h-11 relative border-b border-[#D1D1D1] px-4 bg-[#F3F2F1]">
         <h3 className="font-serif text-sm text-[#242424] font-medium">
           {t.textInput.title}
         </h3>
@@ -407,7 +407,7 @@ export function TextInput({ value, onChange, onClear, entities, onAddEntity, onR
       </div>
 
       {/* Footer bar */}
-      <div className="border-t border-[#E1DFDD] px-4 py-2 bg-[#F5F5F3] flex items-center justify-between">
+      <div className="border-t border-[#E1DFDD] px-4 py-2 bg-[#F3F2F1] flex items-center justify-between">
         <p className="label-meta text-muted-foreground">
           {value ? t.textInput.wordCount(wordCount) : '\u00A0'}
         </p>

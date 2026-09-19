@@ -54,7 +54,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
         {toasts.map((toast) => (
           <div
             key={toast.id}
-            className={`pointer-events-auto flex items-center gap-3 bg-[#0078D4] text-[#FFFFFF] px-4 py-3 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] animate-toast-in transition-[opacity,transform] duration-200 ease-out ${
+            className={`pointer-events-auto flex items-center gap-3 rounded-md bg-[#0078D4] text-[#FFFFFF] px-4 py-3 shadow-[0_8px_16px_rgba(0,0,0,0.24),0_0_2px_rgba(0,0,0,0.2)] animate-toast-in transition-[opacity,transform] duration-200 ease-out ${
               toast.exiting ? 'opacity-0 translate-y-3' : ''
             }`}
           >
@@ -65,7 +65,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                   toast.action!.onClick();
                   dismiss(toast.id);
                 }}
-                className="text-xs font-sans font-bold uppercase tracking-wider text-[#FF3333] hover:text-[#FF6666] transition-colors cursor-pointer ml-2"
+                className="text-xs font-sans font-bold uppercase tracking-wider text-[#FFFFFF] underline decoration-2 underline-offset-2 hover:decoration-[#FFFFFF]/60 transition-colors cursor-pointer ml-2"
               >
                 {toast.action.label}
               </button>

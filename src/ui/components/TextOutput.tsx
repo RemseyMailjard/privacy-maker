@@ -97,7 +97,7 @@ export function TextOutput({ value, entries, loading, onDownloadCertificate }: T
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between h-11 relative border-b border-[#C8C5BC] px-4 bg-[#F4F3EE]">
+      <div className="flex items-center justify-between h-11 relative border-b border-[#D1D1D1] px-4 bg-[#F3F2F1]">
         <h3 className="font-serif text-sm text-[#242424] font-medium">
           {t.textOutput.title}
         </h3>
@@ -140,7 +140,7 @@ export function TextOutput({ value, entries, loading, onDownloadCertificate }: T
         ) : (
           /* Empty state: numbered guide */
           <div className="flex flex-col items-center justify-center h-full min-h-[160px] text-center px-4">
-            <div className="w-10 h-10 bg-[#F4F3EE] border border-[#C8C5BC] flex items-center justify-center mb-4">
+            <div className="w-10 h-10 bg-[#F3F2F1] border border-[#D1D1D1] flex items-center justify-center mb-4">
               <Shield className="w-5 h-5 text-[#616161]" />
             </div>
             <p className="text-sm text-[#242424] font-medium mb-4 font-serif">{t.textOutput.emptyStateHint}</p>
@@ -156,7 +156,7 @@ export function TextOutput({ value, entries, loading, onDownloadCertificate }: T
           </div>
         )}
       </div>
-      <div className="mt-auto border-t border-[#E1DFDD] px-4 py-2 bg-[#F5F5F3]">
+      <div className="mt-auto border-t border-[#E1DFDD] px-4 py-2 bg-[#F3F2F1]">
         <p className="label-meta text-muted-foreground">
           {value && entries.length > 0 ? t.entityTable.title(entries.length) : ' '}
         </p>

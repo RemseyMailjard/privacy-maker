@@ -430,7 +430,7 @@ export default function App() {
                         aria-checked={regexRules}
                         onClick={() => handleRegexChange(!regexRules)}
                         className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer border-2 border-transparent transition-colors ${
-                          regexRules ? 'bg-[#0078D4]' : 'bg-[#C8C5BC]'
+                          regexRules ? 'bg-[#0078D4]' : 'bg-[#D1D1D1]'
                         }`}
                       >
                         <span className={`pointer-events-none inline-block h-4 w-4 bg-white shadow-sm transition-transform ${
@@ -444,7 +444,7 @@ export default function App() {
                         <select
                           value={regexRegion}
                           onChange={(e) => handleRegexRegionChange(e.target.value as RegexRegionId)}
-                          className="mt-1 w-full px-2 py-1.5 text-xs border border-[#C8C5BC] bg-white text-[#242424] cursor-pointer focus:outline-none focus:border-[#D1D1D1]"
+                          className="mt-1 w-full px-2 py-1.5 text-xs border border-[#D1D1D1] bg-white text-[#242424] cursor-pointer focus:outline-none focus:border-[#D1D1D1]"
                         >
                           {REGEX_REGIONS.map((r) => (
                             <option key={r} value={r}>
@@ -456,7 +456,7 @@ export default function App() {
                     )}
                   </div>
                   {/* Heavier rule: detection settings above, output settings below */}
-                  <div className="border-t-2 border-[#D1D1D1] pt-3">
+                  <div className="border-t border-[#D1D1D1] pt-3">
                     <span className="label-meta text-muted-foreground">{t.settings.replacementStyle}</span>
                     <div className="mt-2 space-y-2">
                       <button
@@ -530,7 +530,7 @@ export default function App() {
             The size shown is the active provider's real download (desktop defaults to
             the large high-accuracy model, constrained devices to the lightweight one). */}
         {!modelConsented && !modelLoaded && !modelLoading && !modelError && (
-          <div className="mb-4 border border-[#D1D1D1] bg-[#F4F3EE] px-4 py-4 flex flex-col sm:flex-row sm:items-center gap-4 justify-between">
+          <div className="mb-4 border border-[#D1D1D1] bg-[#F3F2F1] px-4 py-4 flex flex-col sm:flex-row sm:items-center gap-4 justify-between">
             <div>
               <p className="text-sm text-[#242424] font-semibold">{t.loading.setupTitle}</p>
               <p className="text-xs text-[#616161] mt-1 leading-relaxed max-w-xl">{t.loading.setupBody(PROVIDER_SIZES[activeProvider])}</p>
@@ -547,7 +547,7 @@ export default function App() {
         )}
         {/* Engine status strip: setup happens here, the rest of the page stays readable */}
         {modelLoading && (
-          <div className="animate-content-reveal-rise mb-4 border border-[#C8C5BC] bg-[#F4F3EE] px-4 py-3" role="status">
+          <div className="animate-content-reveal-rise mb-4 border border-[#D1D1D1] bg-[#F3F2F1] px-4 py-3" role="status">
             <div className="flex items-center justify-between gap-4 mb-2">
               {/* Name the phase: "downloading" while bytes flow, "preparing" before and after
                   (cache reads, WASM compile). The bar sweeps whenever no amount is knowable. */}
@@ -595,11 +595,13 @@ export default function App() {
           </div>
         )}
 
+        {/* Workspace frame: file bar + document panels share one rounded, clipped outline */}
+        <div className="rounded-lg overflow-hidden">
         {/* File bar - input file (left) + download (right) */}
         {fileName && anonymizedText && (
-          <div className="animate-content-reveal grid grid-cols-1 md:grid-cols-2 gap-0 border border-b-0 border-[#C8C5BC] bg-[#F4F3EE]">
-            <div className="flex items-center gap-2.5 px-4 py-2.5 border-r-0 md:border-r border-[#C8C5BC]">
-              <div className="w-7 h-7 bg-[#FFFFFF] border border-[#C8C5BC] flex items-center justify-center flex-shrink-0">
+          <div className="animate-content-reveal grid grid-cols-1 md:grid-cols-2 gap-0 border border-b-0 border-[#D1D1D1] bg-[#F3F2F1]">
+            <div className="flex items-center gap-2.5 px-4 py-2.5 border-r-0 md:border-r border-[#D1D1D1]">
+              <div className="w-7 h-7 bg-[#FFFFFF] border border-[#D1D1D1] flex items-center justify-center flex-shrink-0">
                 {isImageFile(fileName)
                   ? <ImageIcon className="w-3.5 h-3.5 text-[#616161]" />
                   : <FileText className="w-3.5 h-3.5 text-[#616161]" />}
@@ -611,7 +613,7 @@ export default function App() {
                 <button
                   onClick={handleDownloadDocx}
                   disabled={downloading}
-                  className="pressable flex items-center gap-2 px-3 py-1.5 border border-[#C8C5BC] bg-[#FFFFFF] text-[#242424] hover:bg-[#0078D4] hover:text-[#FFFFFF] hover:border-[#D1D1D1] transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed text-xs font-medium"
+                  className="pressable flex items-center gap-2 px-3 py-1.5 border border-[#D1D1D1] bg-[#FFFFFF] text-[#242424] hover:bg-[#0078D4] hover:text-[#FFFFFF] hover:border-[#D1D1D1] transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed text-xs font-medium"
                 >
                   <Download className="w-3 h-3" />
                   {t.textOutput.downloadDocx}
@@ -621,7 +623,7 @@ export default function App() {
                 <button
                   onClick={handleDownloadImage}
                   disabled={downloading}
-                  className="pressable flex items-center gap-2 px-3 py-1.5 border border-[#C8C5BC] bg-[#FFFFFF] text-[#242424] hover:bg-[#0078D4] hover:text-[#FFFFFF] hover:border-[#D1D1D1] transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed text-xs font-medium"
+                  className="pressable flex items-center gap-2 px-3 py-1.5 border border-[#D1D1D1] bg-[#FFFFFF] text-[#242424] hover:bg-[#0078D4] hover:text-[#FFFFFF] hover:border-[#D1D1D1] transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed text-xs font-medium"
                 >
                   <Download className="w-3 h-3" />
                   {t.textOutput.downloadImage}
@@ -631,7 +633,7 @@ export default function App() {
                 <button
                   onClick={handleDownloadPdf}
                   disabled={downloading}
-                  className="pressable flex items-center gap-2 px-3 py-1.5 border border-[#C8C5BC] bg-[#FFFFFF] text-[#242424] hover:bg-[#0078D4] hover:text-[#FFFFFF] hover:border-[#D1D1D1] transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed text-xs font-medium"
+                  className="pressable flex items-center gap-2 px-3 py-1.5 border border-[#D1D1D1] bg-[#FFFFFF] text-[#242424] hover:bg-[#0078D4] hover:text-[#FFFFFF] hover:border-[#D1D1D1] transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed text-xs font-medium"
                 >
                   <Download className="w-3 h-3" />
                   {t.textOutput.downloadPdf}
@@ -642,17 +644,18 @@ export default function App() {
         )}
 
         {/* Document panels */}
-        <div className={`grid grid-cols-1 md:grid-cols-2 gap-0 border border-[#C8C5BC] bg-[#FFFFFF] ${fileName && anonymizedText ? 'border-t-0' : ''}`}>
-          <div className="md:border-r border-[#C8C5BC] bg-[#FFFFFF] flex flex-col">
+        <div className={`grid grid-cols-1 md:grid-cols-2 gap-0 border border-[#D1D1D1] bg-[#FFFFFF] ${fileName && anonymizedText ? 'border-t-0' : ''}`}>
+          <div className="md:border-r border-[#D1D1D1] bg-[#FFFFFF] flex flex-col">
             <TextInput value={inputText} onChange={handleInputChange} onClear={handleClear} entities={entities} onAddEntity={addManualEntity} onRemoveEntity={removeEntity} fileName={fileName} onLoadFile={loadFile} onRemoveFile={removeFile} />
           </div>
-          <div className="bg-[#FFFFFF] border-t md:border-t-0 border-[#C8C5BC] flex flex-col">
+          <div className="bg-[#FFFFFF] border-t md:border-t-0 border-[#D1D1D1] flex flex-col">
             <TextOutput value={anonymizedText} entries={entries} loading={anonymizing} onDownloadCertificate={entries.length > 0 ? handleDownloadCertificate : undefined} />
           </div>
         </div>
 
         {/* Custom dictionary - attached to the workspace, on the way to the Redact button */}
         <DictionaryBar dictionary={dictionary} onChange={handleDictionaryChange} />
+        </div>
 
         {/* Redact button */}
         <div className="sticky bottom-0 z-30 chrome-material py-4 -mx-6 px-6">
@@ -726,8 +729,7 @@ export default function App() {
                     onChange={(e) => setNewLabelInput(e.target.value)}
                     onKeyDown={(e) => { if (e.key === 'Enter') handleAddLabel(); }}
                     placeholder={t.settings.customLabelsPlaceholder}
-                    className="w-52 text-xs px-3 py-2 border-b-2 border-[#D1D1D1] bg-transparent text-[#242424] font-mono placeholder:text-muted-foreground focus:outline-none focus:bg-[#F0F0F0]"
-                    style={{ borderRadius: 0 }}
+                    className="w-52 text-xs px-3 py-2 rounded-md border border-[#D1D1D1] bg-white text-[#242424] font-mono placeholder:text-muted-foreground focus:outline-none focus:border-[#0078D4] focus:ring-1 focus:ring-[#0078D4]"
                   />
                   <button
                     onClick={handleAddLabel}
@@ -740,12 +742,12 @@ export default function App() {
                   {customLabels.map((label) => (
                     <span
                       key={label}
-                      className="inline-flex items-center gap-1.5 text-xs px-2.5 py-1.5 bg-[#0078D4] text-[#FFFFFF] font-mono"
+                      className="inline-flex items-center gap-1.5 text-xs px-2.5 py-1.5 rounded-full bg-[#0078D4] text-[#FFFFFF] font-mono"
                     >
                       {label}
                       <button
                         onClick={() => handleRemoveLabel(label)}
-                        className="text-[#FFFFFF]/60 hover:text-[#FF3333] transition-colors cursor-pointer"
+                        className="text-[#FFFFFF]/60 hover:text-[#FFFFFF] transition-colors cursor-pointer"
                         aria-label={`Remove ${label}`}
                       >
                         <X className="w-3 h-3" />
@@ -781,7 +783,7 @@ export default function App() {
       <FAQ />
 
       {/* Footer */}
-      <footer className="border-t-2 border-[#D1D1D1] bg-[#FFFFFF] px-6 py-5">
+      <footer className="border-t border-[#D1D1D1] bg-[#FFFFFF] px-6 py-5">
         <div className="max-w-6xl mx-auto flex flex-col items-start gap-3">
           <div className="flex items-start gap-2.5">
             <Lock className="w-3.5 h-3.5 text-[#242424] shrink-0 -translate-y-px" />
@@ -807,7 +809,7 @@ export default function App() {
             {footerTooltipOpen && (
               <>
                 <div className="fixed inset-0 z-40" onClick={() => setFooterTooltipOpen(false)} />
-                <div className="absolute bottom-full right-0 mb-2 z-50 bg-[#0078D4] text-[#FFFFFF] p-3 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] max-w-xs">
+                <div className="absolute bottom-full right-0 mb-2 z-50 rounded-md bg-[#0078D4] text-[#FFFFFF] p-3 shadow-[0_8px_16px_rgba(0,0,0,0.24),0_0_2px_rgba(0,0,0,0.2)] max-w-xs">
                   <p className="text-xs font-sans leading-relaxed">{t.footer.verifyTooltip}</p>
                 </div>
               </>

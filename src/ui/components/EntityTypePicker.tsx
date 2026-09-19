@@ -46,7 +46,7 @@ export function EntityTypePicker({ word, x, y, onSelect, onClose }: EntityTypePi
       <Card
         role="dialog"
         aria-label={`${t.entityTable.markAs}: ${word}`}
-        className="fixed z-[61] py-1 w-52 shadow-[4px_4px_0px_0px_#242424] max-h-[70vh] overflow-auto animate-picker-in"
+        className="fixed z-[61] py-1 w-52 rounded-lg shadow-[0_8px_16px_rgba(0,0,0,0.14),0_0_2px_rgba(0,0,0,0.12)] max-h-[70vh] overflow-auto animate-picker-in"
         style={{ left, top, transformOrigin: fitsBelow ? 'top left' : 'bottom left' }}
       >
         <div className="px-3 py-2.5 border-b border-[#E1DFDD]">
@@ -61,7 +61,7 @@ export function EntityTypePicker({ word, x, y, onSelect, onClose }: EntityTypePi
             className="w-full text-left px-3 py-2 text-sm hover:bg-[#E1DFDD] focus:bg-[#E1DFDD] focus:outline-none transition-colors flex items-center gap-2.5 cursor-pointer"
           >
             <div
-              className="w-2 h-2 shrink-0"
+              className="w-2 h-2 shrink-0 rounded-full"
               style={{ backgroundColor: ENTITY_COLORS[type] }}
             />
             <span className="text-foreground/80">{t.entityLabels[type]}</span>
@@ -75,7 +75,7 @@ export function EntityTypePicker({ word, x, y, onSelect, onClose }: EntityTypePi
             className="w-full text-left px-3 py-2 text-sm hover:bg-[#E1DFDD] focus:bg-[#E1DFDD] focus:outline-none transition-colors flex items-center gap-2.5 cursor-pointer"
           >
             <div
-              className="w-2 h-2 shrink-0"
+              className="w-2 h-2 shrink-0 rounded-full"
               style={{ backgroundColor: ENTITY_COLORS[type] }}
             />
             <span className="text-foreground/80">{t.entityLabels[type]}</span>

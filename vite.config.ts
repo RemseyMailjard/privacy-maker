@@ -5,6 +5,7 @@ import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
 import path from 'path'
 import { readFileSync } from 'fs'
+import { execSync } from 'child_process'
 
 // Versions baked in at build time so the footer can never drift from what
 // was actually bundled. Core's version matters independently: it determines
@@ -13,6 +14,17 @@ const appVersion = JSON.parse(readFileSync(path.resolve(__dirname, 'package.json
 const coreVersion = JSON.parse(
   readFileSync(path.resolve(__dirname, 'node_modules/@doccloak/core/package.json'), 'utf8'),
 ).version as string
+// The AGPL-3.0 license requires that anyone using this app over the network
+// can get the exact source it's running. package.json's version isn't bumped
+// on every commit, so the footer links to this commit hash instead - it can
+// never point at source that doesn't match what's deployed.
+const commitHash = (() => {
+  try {
+    return execSync('git rev-parse HEAD').toString().trim()
+  } catch {
+    return 'unknown'
+  }
+})()
 
 export default defineConfig({
   plugins: [
@@ -77,6 +89,7 @@ export default defineConfig({
   define: {
     __APP_VERSION__: JSON.stringify(appVersion),
     __CORE_VERSION__: JSON.stringify(coreVersion),
+    __COMMIT_HASH__: JSON.stringify(commitHash),
   },
   resolve: {
     alias: {

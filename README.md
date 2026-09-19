@@ -123,9 +123,17 @@ npm test           # Run tests
 npm run test:watch # Run tests in watch mode
 ```
 
-## Development
+## What Privacy Maker Adds on Top of DocCloak
 
-Privacy Maker is a fork of the open-source [DocCloak](https://github.com/WLojek/DocCloak) project, rebranded as the first step toward its own product identity. The current release intentionally keeps DocCloak's architecture, UI structure and detection engine unchanged - only user-facing branding (name, copy, favicon/logo) has been updated. No new features, backend, or platform migrations have been introduced at this stage.
+Privacy Maker started as a fork of [DocCloak](https://github.com/WLojek/DocCloak) and still uses its detection engine (`@doccloak/core`), but the app layer has since diverged with its own features:
+
+- **Dutch-market detection.** A dedicated KvK-nummer (Chamber of Commerce number) regex rule, on top of the existing region packs.
+- **Dutch localization by default.** A full Dutch translation, set as the app's default language instead of English.
+- **Installable PWA.** A web app manifest, service worker caching strategy for the ML/OCR assets, and an explicit "install app" entry point in the header - so the tool can be added to a device's home screen/app list and keeps working offline after first load.
+- **Downloadable redaction certificate.** A generated proof-of-redaction document users can save alongside the anonymized output, for audit trails.
+- **Verifiable source per deployment.** The footer links to the exact commit the running build was compiled from (not just a version number), so the AGPL-3.0 "corresponding source" obligation holds even between version bumps.
+- **Production CI/CD.** An Azure Static Web Apps deployment pipeline (build, size-optimized artifact, deploy on push).
+- **Visual redesign.** A Fluent 2 based UI restyle distinct from the upstream DocCloak look.
 
 Contributions are welcome for UI, translations, and app-level fixes.
 
@@ -140,4 +148,4 @@ Privacy Maker is built on top of **[DocCloak](https://github.com/WLojek/DocCloak
 
 The PII detection engine that Privacy Maker depends on, [@doccloak/core](https://github.com/WLojek/DocCloak.Core) (published to npm as `@doccloak/core`), is a separate project licensed under Apache-2.0 and has not been modified or renamed.
 
-Because Privacy Maker is a derivative of an AGPL-3.0 licensed application, anyone who hosts a modified version of it (including over a network) must also make their source code available under AGPL-3.0.
+Because Privacy Maker is a derivative of an AGPL-3.0 licensed application, anyone who hosts a modified version of it (including over a network) must also make their source code available under AGPL-3.0. The deployed app links to the exact source commit it was built from in its footer, in line with that requirement.

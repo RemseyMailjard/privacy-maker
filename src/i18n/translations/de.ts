@@ -230,6 +230,18 @@ export const de: Translations = {
       trustOpenSource: 'Open Source - AGPL-3.0',
       trustNoTracking: 'Kein Tracking, keine Anmeldung',
     },
+    features: {
+      eyebrow: 'Für den echten Arbeitsalltag',
+      heading: 'Mehr als nur Erkennung',
+      kvkTitle: 'Niederländische Handelsregisternummern erkannt',
+      kvkBody: 'Erkennt niederländische KvK-Nummern neben Namen, E-Mail-Adressen und Anschriften.',
+      offlineTitle: 'Funktioniert auch offline',
+      offlineBody: 'Installieren Sie Privacy Maker als App. Nach dem ersten Laden funktioniert alles auch ohne Internetverbindung.',
+      certificateTitle: 'Nachweis der Schwärzung',
+      certificateBody: 'Laden Sie für jedes Dokument ein Schwärzungszertifikat herunter - nützlich für eine Prüfspur.',
+      languageTitle: 'Neun Oberflächensprachen',
+      languageBody: 'Nutzen Sie Privacy Maker in Ihrer eigenen Sprache, weitere folgen.',
+    },
     audience: {
       eyebrow: 'Für Ihre Arbeit entwickelt',
       heading: 'KI nutzen, ohne sensible Daten preiszugeben',

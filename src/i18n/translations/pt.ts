@@ -230,6 +230,18 @@ export const pt: Translations = {
       trustOpenSource: 'Código aberto · AGPL-3.0',
       trustNoTracking: 'Sem rastreamento, sem registo',
     },
+    features: {
+      eyebrow: 'Feito para o uso real',
+      heading: 'Mais do que deteção',
+      kvkTitle: 'Números de empresa holandeses reconhecidos',
+      kvkBody: 'Deteta números KvK holandeses junto com nomes, e-mails e moradas.',
+      offlineTitle: 'Funciona sem ligação',
+      offlineBody: 'Instale o Privacy Maker como aplicação. Após o primeiro carregamento, tudo continua a funcionar offline.',
+      certificateTitle: 'Comprovativo de redação',
+      certificateBody: 'Descarregue um certificado de redação para cada documento - útil para auditoria.',
+      languageTitle: 'Nove idiomas de interface',
+      languageBody: 'Use o Privacy Maker no seu idioma, com mais a chegar.',
+    },
     audience: {
       eyebrow: 'Feito para o seu trabalho',
       heading: 'Utilize IA sem divulgar dados sensíveis',

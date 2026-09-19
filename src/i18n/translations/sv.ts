@@ -230,6 +230,18 @@ export const sv: Translations = {
       trustOpenSource: 'Öppen källkod · AGPL-3.0',
       trustNoTracking: 'Ingen spårning, ingen registrering',
     },
+    features: {
+      eyebrow: 'Byggt för verkligt arbete',
+      heading: 'Mer än bara upptäckt',
+      kvkTitle: 'Nederländska organisationsnummer identifieras',
+      kvkBody: 'Identifierar nederländska KvK-nummer tillsammans med namn, e-postadresser och adresser.',
+      offlineTitle: 'Fungerar utan uppkoppling',
+      offlineBody: 'Installera Privacy Maker som app. Efter första laddningen fortsätter allt att fungera offline.',
+      certificateTitle: 'Bevis på redigering',
+      certificateBody: 'Ladda ner ett redigeringscertifikat för varje dokument - användbart för spårbarhet.',
+      languageTitle: 'Nio gränssnittsspråk',
+      languageBody: 'Använd Privacy Maker på ditt eget språk, fler tillkommer.',
+    },
     audience: {
       eyebrow: 'Byggt för ditt arbete',
       heading: 'Använd AI utan att läcka känsliga uppgifter',

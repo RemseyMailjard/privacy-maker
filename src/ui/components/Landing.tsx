@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Scale, Briefcase, Stethoscope, Users, Lock, ShieldCheck, Eye, ChevronDown, ArrowDown } from 'lucide-react';
+import { Scale, Briefcase, Stethoscope, Users, Lock, ShieldCheck, Eye, ChevronDown, ArrowDown, Building2, WifiOff, FileCheck, Globe } from 'lucide-react';
 import { useTranslation } from '../../i18n/LanguageContext.tsx';
 import { RotatingWord } from './RotatingWord.tsx';
 
@@ -82,6 +82,35 @@ export function TrustBand() {
           <Eye className="w-3.5 h-3.5" />
           {h.trustNoTracking}
         </span>
+      </div>
+    </section>
+  );
+}
+
+export function Features() {
+  const { t } = useTranslation();
+  const f = t.landing.features;
+  const cards = [
+    { icon: Building2, title: f.kvkTitle, body: f.kvkBody },
+    { icon: WifiOff, title: f.offlineTitle, body: f.offlineBody },
+    { icon: FileCheck, title: f.certificateTitle, body: f.certificateBody },
+    { icon: Globe, title: f.languageTitle, body: f.languageBody },
+  ];
+  return (
+    <section className="bg-[#FFFFFF] px-6 py-20">
+      <div className="max-w-5xl mx-auto">
+        <h2 className="text-center font-serif text-3xl md:text-4xl text-[#242424] mb-12 font-medium tracking-tight">
+          {f.heading}
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5">
+          {cards.map(({ icon: Icon, title, body }) => (
+            <div key={title} className="p-1">
+              <Icon className="w-5 h-5 text-[#242424] mb-3" strokeWidth={1.5} />
+              <h3 className="font-serif text-lg text-[#242424] font-medium mb-2">{title}</h3>
+              <p className="text-sm text-[#616161] leading-relaxed">{body}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

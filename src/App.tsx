@@ -13,11 +13,11 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { DictionaryBar } from './ui/components/DictionaryBar.tsx';
-import { Lock, ShieldCheck, Settings, ArrowRight, Languages, Check, Plus, X, ChevronDown, Info, FileText, Image as ImageIcon, Download, Linkedin, RotateCw, Share } from 'lucide-react';
+import { Lock, ShieldCheck, Settings, ArrowRight, Languages, Check, Plus, X, ChevronDown, Info, FileText, Image as ImageIcon, Download, Github, Linkedin, RotateCw, Share } from 'lucide-react';
 import { isImageFile } from '@doccloak/core/dom';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useToast } from './ui/components/Toast.tsx';
-import { Hero, TrustBand, Audience, HowItWorks, FAQ } from './ui/components/Landing.tsx';
+import { Hero, TrustBand, Features, Audience, HowItWorks, FAQ } from './ui/components/Landing.tsx';
 import { PROVIDERS, REGEX_REGIONS } from '@doccloak/core';
 import { PROVIDER_SIZES, getRecommendedProviderId } from './engine.ts';
 import type { RegexRegionId } from '@doccloak/core';
@@ -568,6 +568,7 @@ export default function App() {
       {/* Landing: hero + trust band + audience */}
       <Hero onScrollToTool={scrollToTool} />
       <TrustBand />
+      <Features />
       <Audience />
 
       {/* Main content (the tool) */}
@@ -844,6 +845,15 @@ export default function App() {
             <Linkedin className="w-3.5 h-3.5 shrink-0 -translate-y-px" />
             <span>Gemaakt door Remsey Mailjard</span>
           </a>
+          <a
+            href={`https://github.com/RemseyMailjard/privacy-maker/tree/${__COMMIT_HASH__}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="label-meta text-[#242424] hover:underline flex items-center gap-2.5 leading-none"
+          >
+            <Github className="w-3.5 h-3.5 shrink-0 -translate-y-px" />
+            <span>Broncode van deze versie (AGPL-3.0)</span>
+          </a>
           <div className="relative">
             <button
               onClick={() => setFooterTooltipOpen(!footerTooltipOpen)}
@@ -862,7 +872,7 @@ export default function App() {
             )}
           </div>
           <p className="label-meta text-muted-foreground/80 leading-none mt-2 pt-3 border-t border-[#E1DFDD] w-full">
-            © {new Date().getFullYear()} Privacy Maker v{__APP_VERSION__} · core {__CORE_VERSION__} · Based on DocCloak by Witold Łojek
+            © {new Date().getFullYear()} Privacy Maker v{__APP_VERSION__} ({__COMMIT_HASH__.slice(0, 7)}) · core {__CORE_VERSION__} · Based on DocCloak by Witold Łojek
           </p>
         </div>
       </footer>

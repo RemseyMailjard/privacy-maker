@@ -230,6 +230,18 @@ export const en: Translations = {
       trustOpenSource: 'Open source · AGPL-3.0',
       trustNoTracking: 'No account, no tracking, no telemetry',
     },
+    features: {
+      eyebrow: 'Built for real use',
+      heading: 'More than PII detection',
+      kvkTitle: 'Dutch business numbers, recognized',
+      kvkBody: 'Detects Dutch KvK (Chamber of Commerce) numbers alongside names, emails and addresses.',
+      offlineTitle: 'Works without a connection',
+      offlineBody: 'Install Privacy Maker as an app. After the first load, everything keeps working offline.',
+      certificateTitle: 'Proof of redaction',
+      certificateBody: 'Download a redaction certificate for every document - useful for an audit trail.',
+      languageTitle: 'Nine interface languages',
+      languageBody: 'Use Privacy Maker in your own language, with more added over time.',
+    },
     audience: {
       eyebrow: 'Built for your work',
       heading: 'Use AI without leaking sensitive data',

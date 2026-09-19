@@ -197,6 +197,18 @@ export interface Translations {
       trustOpenSource: string;
       trustNoTracking: string;
     };
+    features: {
+      eyebrow: string;
+      heading: string;
+      kvkTitle: string;
+      kvkBody: string;
+      offlineTitle: string;
+      offlineBody: string;
+      certificateTitle: string;
+      certificateBody: string;
+      languageTitle: string;
+      languageBody: string;
+    };
     audience: {
       eyebrow: string;
       heading: string;

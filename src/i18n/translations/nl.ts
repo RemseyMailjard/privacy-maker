@@ -230,6 +230,18 @@ export const nl: Translations = {
       trustOpenSource: 'Open source · AGPL-3.0',
       trustNoTracking: 'Geen account, geen tracking, geen telemetrie',
     },
+    features: {
+      eyebrow: 'Gebouwd voor de praktijk',
+      heading: 'Meer dan alleen detectie',
+      kvkTitle: 'Nederlandse bedrijfsgegevens, herkend',
+      kvkBody: 'Herkent KvK-nummers naast namen, e-mailadressen en adressen.',
+      offlineTitle: 'Werkt ook zonder internet',
+      offlineBody: 'Installeer Privacy Maker als app. Na de eerste keer laden blijft alles offline werken.',
+      certificateTitle: 'Bewijs van redactie',
+      certificateBody: 'Download een redactiecertificaat bij elk document - handig voor een audit trail.',
+      languageTitle: 'Negen interfacetalen',
+      languageBody: 'Gebruik Privacy Maker in uw eigen taal, met meer talen op komst.',
+    },
     audience: {
       eyebrow: 'Gemaakt voor uw werk',
       heading: 'Gebruik AI zonder gevoelige gegevens te lekken',

@@ -12,7 +12,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { DictionaryBar } from './ui/components/DictionaryBar.tsx';
-import { Lock, ShieldCheck, Settings, ArrowRight, Languages, Check, Plus, X, ChevronDown, Info, FileText, Image as ImageIcon, Download, Github, Linkedin, RotateCw } from 'lucide-react';
+import { Lock, ShieldCheck, Settings, ArrowRight, Languages, Check, Plus, X, ChevronDown, Info, FileText, Image as ImageIcon, Download, Linkedin, RotateCw } from 'lucide-react';
 import { isImageFile } from '@doccloak/core/dom';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useToast } from './ui/components/Toast.tsx';
@@ -711,15 +711,6 @@ export default function App() {
             <Lock className="w-3.5 h-3.5 text-[#111111] shrink-0 -translate-y-px" />
             <p className="label-meta text-[#111111] leading-tight">{t.footer.offlineMessage}</p>
           </div>
-          <a
-            href="https://github.com/WLojek/DocCloak"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="label-meta text-[#111111] hover:underline flex items-center gap-2.5 leading-none"
-          >
-            <Github className="w-3.5 h-3.5 shrink-0 -translate-y-px" />
-            <span>Based on DocCloak (open source) · AGPL-3.0</span>
-          </a>
           <a
             href="https://www.linkedin.com/in/remseymailjard"
             target="_blank"

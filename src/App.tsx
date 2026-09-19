@@ -3,6 +3,8 @@ import { TextOutput } from './ui/components/TextOutput.tsx';
 import { EntityTable } from './ui/components/EntityTable.tsx';
 import { DeAnonymize } from './ui/components/DeAnonymize.tsx';
 import { useAnonymizer } from './ui/hooks/useAnonymizer.ts';
+import { useBatchAnonymizer } from './ui/hooks/useBatchAnonymizer.ts';
+import { BatchView } from './ui/components/BatchView.tsx';
 import { usePwaInstall } from './ui/hooks/usePwaInstall.ts';
 import { useTranslation } from './i18n/LanguageContext.tsx';
 import { languages } from './i18n/translations/index.ts';
@@ -22,6 +24,7 @@ import { PROVIDERS, REGEX_REGIONS } from '@doccloak/core';
 import { PROVIDER_SIZES, getRecommendedProviderId } from './engine.ts';
 import type { RegexRegionId } from '@doccloak/core';
 import { generateCertificateText } from './ui/certificate.ts';
+import { triggerBlobDownload } from './ui/downloadBlob.ts';
 
 function formatBytes(bytes: number): string {
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
@@ -84,6 +87,9 @@ export default function App() {
     acceptModelDownload,
   } = useAnonymizer();
 
+  const batch = useBatchAnonymizer();
+  const [toolMode, setToolMode] = useState<'single' | 'batch'>('single');
+
   const { showToast } = useToast();
   const { canInstall, needsIosInstructions, promptInstall } = usePwaInstall();
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -110,17 +116,6 @@ export default function App() {
     return () => observer.disconnect();
   }, []);
 
-  const triggerBlobDownload = useCallback((blob: Blob, downloadName: string) => {
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = downloadName;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  }, []);
-
   const handleDownloadDocx = useCallback(async () => {
     if (!exportDocx) return;
     setDownloading(true);
@@ -136,7 +131,7 @@ export default function App() {
     } finally {
       setDownloading(false);
     }
-  }, [exportDocx, docxFileName, triggerBlobDownload, showToast, t]);
+  }, [exportDocx, docxFileName, showToast, t]);
 
   const handleDownloadImage = useCallback(async () => {
     if (!exportRedactedImage) return;
@@ -152,7 +147,7 @@ export default function App() {
     } finally {
       setDownloading(false);
     }
-  }, [exportRedactedImage, fileName, triggerBlobDownload, showToast, t]);
+  }, [exportRedactedImage, fileName, showToast, t]);
 
   const handleDownloadPdf = useCallback(async () => {
     if (!exportRedactedPdf) return;
@@ -168,7 +163,7 @@ export default function App() {
     } finally {
       setDownloading(false);
     }
-  }, [exportRedactedPdf, fileName, triggerBlobDownload, showToast, t]);
+  }, [exportRedactedPdf, fileName, showToast, t]);
 
   const handleDownloadCertificate = useCallback(async () => {
     try {
@@ -199,7 +194,7 @@ export default function App() {
   }, [
     t, entities, excludedIndices, replacementMode, activeProvider, threshold,
     regexRules, regexRegion, customLabels, dictionary, anonymizedText,
-    triggerBlobDownload, showToast,
+    showToast,
   ]);
 
   // Keyboard shortcut: Cmd+Enter / Ctrl+Enter to redact
@@ -642,6 +637,32 @@ export default function App() {
           </div>
         )}
 
+        {/* Mode toggle: single file (default) vs batch */}
+        <div className="mb-4 inline-flex border border-[#D1D1D1] bg-[#FFFFFF]">
+          <button
+            onClick={() => setToolMode('single')}
+            className={`px-4 py-2 text-xs font-medium cursor-pointer transition-colors ${
+              toolMode === 'single' ? 'bg-[#0078D4] text-[#FFFFFF]' : 'text-[#616161] hover:bg-[#F3F2F1]'
+            }`}
+          >
+            {t.batch.modeSingle}
+          </button>
+          <button
+            onClick={() => setToolMode('batch')}
+            className={`px-4 py-2 text-xs font-medium cursor-pointer transition-colors border-l border-[#D1D1D1] ${
+              toolMode === 'batch' ? 'bg-[#0078D4] text-[#FFFFFF]' : 'text-[#616161] hover:bg-[#F3F2F1]'
+            }`}
+          >
+            {t.batch.modeBatch}
+          </button>
+        </div>
+
+        {toolMode === 'batch' && (
+          <BatchView batch={batch} modelLoaded={modelLoaded} replacementMode={replacementMode} />
+        )}
+
+        {toolMode === 'single' && (
+        <>
         {/* Workspace frame: file bar + document panels share one rounded, clipped outline */}
         <div className="rounded-lg overflow-hidden">
         {/* File bar - input file (left) + download (right) */}
@@ -822,6 +843,8 @@ export default function App() {
               hasMapping={entries.length > 0}
             />
           </div>
+        )}
+        </>
         )}
       </main>
 

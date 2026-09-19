@@ -6,6 +6,7 @@
   "description": "Chrome extension: redact PII directly in the ChatGPT/Claude/Copilot compose box, 100% local. MV3.",
   "license": "AGPL-3.0",
   "scripts": {
+    "postinstall": "node scripts/copy-assets.mjs",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint ."

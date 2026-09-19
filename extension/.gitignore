@@ -1,0 +1,5 @@
+# ONNX Runtime files (copied from node_modules after npm install)
+public/ort-wasm-simd-threaded.wasm
+public/ort-wasm-simd-threaded.jsep.wasm
+public/ort-wasm-simd-threaded.mjs
+public/ort-wasm-simd-threaded.jsep.mjs

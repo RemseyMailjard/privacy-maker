@@ -16,9 +16,11 @@ interface BatchViewProps {
   batch: ReturnType<typeof useBatchAnonymizer>;
   modelLoaded: boolean;
   replacementMode: ReplacementMode;
+  onDownloadZip: () => void;
+  zipping: boolean;
 }
 
-export function BatchView({ batch, modelLoaded, replacementMode }: BatchViewProps) {
+export function BatchView({ batch, modelLoaded, replacementMode, onDownloadZip, zipping }: BatchViewProps) {
   const { t } = useTranslation();
   const { showToast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -136,15 +138,27 @@ export function BatchView({ batch, modelLoaded, replacementMode }: BatchViewProp
                 </>
               )}
             </div>
-            <Button
-              onClick={() => void processAll()}
-              disabled={!modelLoaded || processing || entries.every((e) => e.status === 'done')}
-              variant="solid"
-              size="sm"
-              className="shrink-0 gap-1.5 text-xs font-semibold"
-            >
-              {processing ? t.batch.processing : t.batch.processBatch}
-            </Button>
+            <div className="flex items-center gap-2 shrink-0">
+              {entries.some((e) => e.status === 'done') && (
+                <button
+                  onClick={onDownloadZip}
+                  disabled={zipping}
+                  className="pressable flex items-center gap-1.5 px-3 py-1.5 border border-[#D1D1D1] bg-[#FFFFFF] text-[#242424] hover:bg-[#0078D4] hover:text-[#FFFFFF] transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed text-xs font-medium"
+                >
+                  <Download className="w-3 h-3" />
+                  {t.batch.downloadZip}
+                </button>
+              )}
+              <Button
+                onClick={() => void processAll()}
+                disabled={!modelLoaded || processing || entries.every((e) => e.status === 'done')}
+                variant="solid"
+                size="sm"
+                className="gap-1.5 text-xs font-semibold"
+              >
+                {processing ? t.batch.processing : t.batch.processBatch}
+              </Button>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-[260px_1fr] gap-4">

@@ -24,6 +24,7 @@ import { PROVIDERS, REGEX_REGIONS } from '@doccloak/core';
 import { PROVIDER_SIZES, getRecommendedProviderId } from './engine.ts';
 import type { RegexRegionId } from '@doccloak/core';
 import { generateCertificateText } from './ui/certificate.ts';
+import { exportBatchZip } from './ui/batchExport.ts';
 import { triggerBlobDownload } from './ui/downloadBlob.ts';
 
 function formatBytes(bytes: number): string {
@@ -195,6 +196,38 @@ export default function App() {
     t, entities, excludedIndices, replacementMode, activeProvider, threshold,
     regexRules, regexRegion, customLabels, dictionary, anonymizedText,
     showToast,
+  ]);
+
+  const [zipping, setZipping] = useState(false);
+  const handleDownloadBatchZip = useCallback(async () => {
+    setZipping(true);
+    try {
+      const providerLabel = PROVIDERS.find((p) => p.id === activeProvider)?.label ?? activeProvider;
+      const regexRegionLabel = t.settings.regexRegions[regexRegion] ?? regexRegion;
+      const blob = await exportBatchZip({
+        entries: batch.entries,
+        t,
+        replacementMode,
+        providerLabel,
+        threshold,
+        regexEnabled: regexRules,
+        regexRegionLabel,
+        customLabels,
+        dictionaryCount: dictionary.length,
+        appVersion: __APP_VERSION__,
+        coreVersion: __CORE_VERSION__,
+      });
+      triggerBlobDownload(blob, 'privacy-maker-batch.zip');
+      showToast(t.textOutput.downloaded);
+    } catch (err) {
+      console.error('[Privacy Maker] Batch zip export failed:', err);
+      showToast(t.textOutput.exportFailed);
+    } finally {
+      setZipping(false);
+    }
+  }, [
+    batch.entries, t, replacementMode, activeProvider, threshold,
+    regexRules, regexRegion, customLabels, dictionary, showToast,
   ]);
 
   // Keyboard shortcut: Cmd+Enter / Ctrl+Enter to redact
@@ -658,7 +691,13 @@ export default function App() {
         </div>
 
         {toolMode === 'batch' && (
-          <BatchView batch={batch} modelLoaded={modelLoaded} replacementMode={replacementMode} />
+          <BatchView
+            batch={batch}
+            modelLoaded={modelLoaded}
+            replacementMode={replacementMode}
+            onDownloadZip={handleDownloadBatchZip}
+            zipping={zipping}
+          />
         )}
 
         {toolMode === 'single' && (

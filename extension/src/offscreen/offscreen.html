@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Privacy Maker - offscreen detection host</title>
+  </head>
+  <body>
+    <!--
+      This page is never shown to the user (chrome.offscreen renders it off
+      the visible viewport). Its only job is to host the ONNX/WASM detection
+      engine somewhere with a real DOM and a persistent lifetime, since the
+      MV3 background service worker gets killed after ~30s idle and can't
+      keep a model session alive.
+    -->
+    <script type="module" src="./offscreen.ts"></script>
+  </body>
+</html>

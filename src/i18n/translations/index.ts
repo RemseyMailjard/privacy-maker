@@ -7,8 +7,10 @@ import { es } from './es.ts';
 import { pt } from './pt.ts';
 import { sv } from './sv.ts';
 import { no } from './no.ts';
+import { nl } from './nl.ts';
 
 export const languages: Language[] = [
+  { code: 'nl', name: 'Dutch', nativeName: 'Nederlands', translations: nl },
   { code: 'en', name: 'English', nativeName: 'English', translations: en },
   { code: 'pl', name: 'Polish', nativeName: 'Polski', translations: pl },
   { code: 'de', name: 'German', nativeName: 'Deutsch', translations: de },

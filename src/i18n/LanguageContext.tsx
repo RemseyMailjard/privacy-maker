@@ -17,7 +17,7 @@ function detectLanguage(): string {
   const browserLang = navigator.language.slice(0, 2);
   if (languages.some((l) => l.code === browserLang)) return browserLang;
 
-  return 'en';
+  return 'nl';
 }
 
 const LanguageContext = createContext<LanguageContextValue | null>(null);
